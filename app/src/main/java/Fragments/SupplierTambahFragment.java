@@ -19,9 +19,12 @@ import Remote.UserService;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class SupplierTambahFragment extends Fragment implements View.OnClickListener {
 
+    private String post_url = "http://192.168.10.42:8000/api/";
     private EditText nama_supplier;
     private EditText sales_supplier;
     private EditText no_telp_supplier;
@@ -56,31 +59,27 @@ public class SupplierTambahFragment extends Fragment implements View.OnClickList
         }
 
         else {
-            supplier s = new supplier();
-            s.setNama_supplier(nama_supplier.getText().toString());
-            s.setSales_supplier(sales_supplier.getText().toString());
-            s.setNo_telp_supplier(no_telp_supplier.getText().toString());
-            s.setAlamat_supplier(alamat_supplier.getText().toString());
+            Retrofit.Builder builder = new Retrofit.Builder()
+                    .baseUrl(post_url)
+                    .addConverterFactory(GsonConverterFactory.create());
+            Retrofit retrofit = builder.build();
+            UserService userService = retrofit.create(UserService.class);
+            Call<supplier> supCall = userService.addSupplier(nama_supplier.getText().toString(),
+                    sales_supplier.getText().toString(),no_telp_supplier.getText().toString(),
+                    alamat_supplier.getText().toString());
+            supCall.enqueue(new Callback<supplier>() {
+                @Override
+                public void onResponse(Call<supplier> call, Response<supplier> response) {
+                    Toast.makeText(getContext(), "Success", Toast.LENGTH_SHORT).show();
+                }
 
-            addSupplier(s);
+                @Override
+                public void onFailure(Call<supplier> call, Throwable t) {
+                    Toast.makeText(getContext(), "Failure", Toast.LENGTH_SHORT).show();
+                }
+            });
         }
     }
 
-    public void addSupplier(supplier s) {
-        Call<supplier> call = userService.addSupplier(s);
-        call.enqueue(new Callback<supplier>() {
-            @Override
-            public void onResponse(Call<supplier> call, Response<supplier> response) {
-                if(response.isSuccessful()){
-                    Toast.makeText(getActivity(), "User created successfully!", Toast.LENGTH_SHORT).show();
-                }
-            }
 
-            @Override
-            public void onFailure(Call<supplier> call, Throwable t) {
-                Log.e("ERROR: ", t.getMessage());
-                Toast.makeText(getActivity(), "Failure", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
 }

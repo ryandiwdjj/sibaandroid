@@ -22,7 +22,7 @@ public class OwnerSupplierActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_owner_supplier);
         Toolbar myToolBar = findViewById(R.id.supplier_toolbar);
-        myToolBar.setTitle("Supplier");
+        myToolBar.setTitle("Tampil Supplier");
         myToolBar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
         setSupportActionBar(myToolBar);
 
