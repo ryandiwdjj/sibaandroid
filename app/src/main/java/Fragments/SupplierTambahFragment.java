@@ -1,5 +1,6 @@
 package Fragments;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,13 +15,12 @@ import android.widget.Toast;
 import com.example.siba.R;
 
 import Models.supplier;
-import Remote.UserService;
+import API.ApiClient;
+import API.ApiInterface;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class SupplierTambahFragment extends Fragment implements View.OnClickListener {
 
@@ -31,13 +31,12 @@ public class SupplierTambahFragment extends Fragment implements View.OnClickList
     private EditText alamat_supplier;
     private Button tambah_supplier_btn;
 
-    UserService userService;
+    ApiInterface apiInterface;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_supplier_tambah, container, false);
-        //userService = APIUtils.getUserService();
         nama_supplier = v.findViewById(R.id.nama_supplier_txt);
         sales_supplier = v.findViewById(R.id.sales_supplier_txt);
         no_telp_supplier = v.findViewById(R.id.no_telp_supplier_txt);
@@ -59,25 +58,34 @@ public class SupplierTambahFragment extends Fragment implements View.OnClickList
         }
 
         else {
-            Retrofit.Builder builder = new Retrofit.Builder()
-                    .baseUrl(post_url)
-                    .addConverterFactory(GsonConverterFactory.create());
-            Retrofit retrofit = builder.build();
-            UserService userService = retrofit.create(UserService.class);
-            Call<supplier> supCall = userService.addSupplier(nama_supplier.getText().toString(),
-                    sales_supplier.getText().toString(),no_telp_supplier.getText().toString(),
-                    alamat_supplier.getText().toString());
-            supCall.enqueue(new Callback<supplier>() {
-                @Override
-                public void onResponse(Call<supplier> call, Response<supplier> response) {
-                    Toast.makeText(getContext(), "Success", Toast.LENGTH_SHORT).show();
-                }
+            final ProgressDialog progressDialog = new ProgressDialog(getContext());
+            progressDialog.setMessage("Saving...");
+            progressDialog.show();
+            ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
+                    Call<supplier> call = apiInterface.addSupplier(nama_supplier.getText().toString(),
+                            sales_supplier.getText().toString(),no_telp_supplier.getText().toString(),
+                            alamat_supplier.getText().toString());
 
-                @Override
-                public void onFailure(Call<supplier> call, Throwable t) {
-                    Toast.makeText(getContext(), "Failure", Toast.LENGTH_SHORT).show();
-                }
-            });
+                    System.out.println(nama_supplier.getText().toString());
+
+                    call.enqueue(new Callback<supplier>() {
+                        @Override
+                        public void onResponse(Call<supplier> call, Response<supplier> response) {
+                            progressDialog.dismiss();
+                            if (response.isSuccessful()) {
+                                Toast.makeText(getContext().getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
+                            }
+                            else {
+                                Toast.makeText(getContext().getApplicationContext(), "Failed", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<supplier> call, Throwable t) {
+                            progressDialog.dismiss();
+                            Log.e("On Failure", t.getMessage());
+                            }
+                    });
         }
     }
 

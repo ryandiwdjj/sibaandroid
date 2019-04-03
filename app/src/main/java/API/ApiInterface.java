@@ -1,4 +1,4 @@
-package Remote;
+package API;
 
 import java.util.List;
 
@@ -13,17 +13,17 @@ import retrofit2.http.DELETE;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
-public interface UserService {
-    @GET("supplier")
-    Call<List<supplier>> getSuppliers();
+public interface ApiInterface {
+    @GET("suppliers")
+    Call<List<supplier>> getSupplier();
 
     @POST("supplier/store")
     @FormUrlEncoded
     //Call<supplier> addSupplier(@Body supplier supplier);
     Call<supplier> addSupplier(@Field("nama_supplier")String nama_supplier,
-                               @Field("sales_supplier") String sales_supplier,
-                               @Field("no_telp_supplier") String no_telp_supplier,
-                               @Field("alamat_supplier") String alamat_supplier);
+                                   @Field("sales_supplier") String sales_supplier,
+                                   @Field("no_telp_supplier") String no_telp_supplier,
+                                   @Field("alamat_supplier") String alamat_supplier);
 
     @PUT("supplier/{id}")
     Call<supplier> updateSupplier(@Path("id") int id, @Body supplier supplier);

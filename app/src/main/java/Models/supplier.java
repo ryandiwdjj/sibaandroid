@@ -1,15 +1,19 @@
 package Models;
 
+import com.google.gson.annotations.SerializedName;
+
 public class supplier {
+@SerializedName("id")
     private Integer id_supplier;
+@SerializedName("nama_supplier")
     private String nama_supplier;
+@SerializedName("sales_supplier")
     private String sales_supplier;
+@SerializedName("no_telp_supplier")
     private String no_telp_supplier;
+@SerializedName("alamat_supplier")
     private String alamat_supplier;
 
-    public supplier() {
-
-    }
     public supplier(Integer id_supplier, String nama_supplier, String sales_supplier, String no_telp_supplier, String alamat_supplier) {
         this.id_supplier = id_supplier;
         this.nama_supplier = nama_supplier;
