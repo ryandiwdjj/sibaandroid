@@ -24,14 +24,12 @@ import retrofit2.Response;
 
 public class SupplierTambahFragment extends Fragment implements View.OnClickListener {
 
-    private String post_url = "http://192.168.10.42:8000/api/";
     private EditText nama_supplier;
     private EditText sales_supplier;
     private EditText no_telp_supplier;
     private EditText alamat_supplier;
     private Button tambah_supplier_btn;
 
-    ApiInterface apiInterface;
 
     @Nullable
     @Override
@@ -88,6 +86,5 @@ public class SupplierTambahFragment extends Fragment implements View.OnClickList
                     });
         }
     }
-
 
 }
