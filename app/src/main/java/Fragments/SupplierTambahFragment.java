@@ -71,10 +71,10 @@ public class SupplierTambahFragment extends Fragment implements View.OnClickList
                         public void onResponse(Call<supplier> call, Response<supplier> response) {
                             progressDialog.dismiss();
                             if (response.isSuccessful()) {
-                                Toast.makeText(getContext().getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext().getApplicationContext(), "Supplier ditambah", Toast.LENGTH_SHORT).show();
                             }
                             else {
-                                Toast.makeText(getContext().getApplicationContext(), "Failed", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext().getApplicationContext(), "Cek Koneksi Anda", Toast.LENGTH_SHORT).show();
                             }
                         }
 

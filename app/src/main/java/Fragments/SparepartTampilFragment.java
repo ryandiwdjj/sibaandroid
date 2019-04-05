@@ -34,7 +34,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class SupplierTampilFragment extends Fragment {
+public class SparepartTampilFragment extends Fragment {
     private List<supplier> mListSupplier = new ArrayList<>();
     private List<supplier> supList;
     private RecyclerView recyclerView;
@@ -150,7 +150,7 @@ public class SupplierTampilFragment extends Fragment {
             @Override
             public void onFailure(Call<List<supplier>> call, Throwable t) {
                 Log.e("onFailureTampil", t.getMessage());
-        }
+            }
         });
     }
 

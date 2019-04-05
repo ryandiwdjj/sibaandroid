@@ -99,7 +99,6 @@ public class TampilSupplier extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //method simpan
-                Toast.makeText(TampilSupplier.this, sup.getId_supplier().toString(), Toast.LENGTH_SHORT).show();
                 apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
 
                 sup.setNama_supplier(nama_sup.getText().toString());
@@ -113,7 +112,7 @@ public class TampilSupplier extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<supplier> call, Response<supplier> response) {
                         if(response.isSuccessful()) {
-                            Toast.makeText(TampilSupplier.this, "Supplier Terhapus", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(TampilSupplier.this, "Supplier Diperbaharui", Toast.LENGTH_SHORT).show();
                             onBackPressed();
                         }
                         else {

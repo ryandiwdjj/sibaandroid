@@ -9,7 +9,6 @@ public class ApiClient {
     private static Retrofit retrofit;
 
     public static Retrofit getApiClient(){
-
         if (retrofit==null){
             System.out.println("masuk api client");
             retrofit = new Retrofit.Builder()

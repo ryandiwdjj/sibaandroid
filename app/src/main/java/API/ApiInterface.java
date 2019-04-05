@@ -16,10 +16,13 @@ import retrofit2.http.Path;
 
 public interface ApiInterface {
     ////////////////////////////////////////////////////////////////////////////////////////////////CRUD SUPPLIER
-    @GET("suppliers")
+    @GET("suppliers") //200
     Call<List<supplier>> getSupplier();
 
-    @POST("supplier/store")
+    @GET("supplier/showByName/{nama_supplier}")
+    Call<List<supplier>> getSupplierByName(@Path("nama_supplier") String name);
+
+    @POST("supplier/store") //204
     @FormUrlEncoded
     //Call<supplier> addSupplier(@Body supplier supplier);
     Call<supplier> addSupplier(@Field("nama_supplier")String nama_supplier,
@@ -27,10 +30,10 @@ public interface ApiInterface {
                                    @Field("no_telp_supplier") String no_telp_supplier,
                                    @Field("alamat_supplier") String alamat_supplier);
 
-    @PUT("supplier/update/{id}")
+    @PUT("supplier/update/{id}") //200
     Call<supplier> updateSupplier(@Path("id") int id, @Body supplier supplier);
 
-    @DELETE("supplier/{id}")
+    @DELETE("supplier/{id}") //204
     Call<supplier> deleteSupplier(@Path("id") int id);
 
     ////////////////////////////////////////////////////////////////////////////////////////////////CRUD SPAREPART
