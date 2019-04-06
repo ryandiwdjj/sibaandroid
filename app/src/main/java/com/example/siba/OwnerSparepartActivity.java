@@ -8,10 +8,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import Fragments.SparepartTambahFragment;
 import Fragments.SparepartTampilFragment;
-import Fragments.SupplierCariFragment;
-import Fragments.SupplierTambahFragment;
-import Fragments.SupplierTampilFragment;
 
 public class OwnerSparepartActivity extends AppCompatActivity {
     FragmentManager fragmentManager = getSupportFragmentManager();
@@ -30,7 +28,7 @@ public class OwnerSparepartActivity extends AppCompatActivity {
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.supplier_menu, menu);
+        getMenuInflater().inflate(R.menu.sparepart_menu, menu);
         return true;
     }
 
@@ -42,13 +40,13 @@ public class OwnerSparepartActivity extends AppCompatActivity {
                 finish();
                 break;
             case R.id.tambah_sparepart_tb:
-                myToolBar.setTitle("Tambah Supplier");
-                fragmentManager.beginTransaction().replace(R.id.frame_sparepart, new SupplierTambahFragment()).commit();
+                myToolBar.setTitle("Tambah Sparepart");
+                fragmentManager.beginTransaction().replace(R.id.frame_sparepart, new SparepartTambahFragment()).commit();
                 Toast.makeText(this, "Tambah success", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.tampil_sparepart_tb:
-                myToolBar.setTitle("Tampil Supplier");
-                fragmentManager.beginTransaction().replace(R.id.frame_sparepart, new SupplierTampilFragment()).commit();
+                myToolBar.setTitle("Tampil Sparepart");
+                fragmentManager.beginTransaction().replace(R.id.frame_sparepart, new SparepartTampilFragment()).commit();
                 Toast.makeText(this, "Tampil success", Toast.LENGTH_SHORT).show();
                 break;
 

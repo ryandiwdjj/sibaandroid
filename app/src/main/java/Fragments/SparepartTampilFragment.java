@@ -1,9 +1,7 @@
 package Fragments;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,7 +12,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.SearchView;
 import android.widget.Toast;
 
@@ -25,9 +22,10 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
 
+import Models.sparepart;
 import Models.supplier;
 import Recycler.ClickListener;
-import Recycler.RecyclerAdapterSupplier;
+import Recycler.RecyclerAdapterSparepart;
 import API.ApiClient;
 import API.ApiInterface;
 import retrofit2.Call;
@@ -35,20 +33,20 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class SparepartTampilFragment extends Fragment {
-    private List<supplier> mListSupplier = new ArrayList<>();
-    private List<supplier> supList;
+    private List<sparepart> mListSparepart = new ArrayList<>();
+    private List<sparepart> spareList;
     private RecyclerView recyclerView;
-    public RecyclerAdapterSupplier recyclerAdapterSupplier;
+    public RecyclerAdapterSparepart recyclerAdapterSparepart;
     private RecyclerView.LayoutManager layoutManager;
     ApiInterface apiInterface;
-    private supplier sup;
+    private sparepart spare;
 
 
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_supplier_tampil, container, false);
+        View v = inflater.inflate(R.layout.fragment_sparepart_tampil, container, false);
 
         apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
 
@@ -65,7 +63,7 @@ public class SparepartTampilFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                recyclerAdapterSupplier.getFilter().filter(newText);
+                recyclerAdapterSparepart.getSearchFilter().filter(newText);
                 Log.d("onQueryTextChange","triggered");
 
 //                Call<List<supplier>> call = apiInterface.getSupplierByName(newText);
@@ -74,7 +72,7 @@ public class SparepartTampilFragment extends Fragment {
 //                    @Override
 //                    public void onResponse(Call<List<supplier>> call, Response<List<supplier>> response) {
 //                        recyclerAdapterSupplier.notifyDataSetChanged();
-//                        recyclerAdapterSupplier = new RecyclerAdapterSupplier(getContext(), response.body()); //getresult()
+//                        recyclerAdapterSupplier = new RecyclerAdapterSparepart(getContext(), response.body()); //getresult()
 //                        recyclerView.setAdapter(recyclerAdapterSupplier);
 //                    }
 //
@@ -89,57 +87,57 @@ public class SparepartTampilFragment extends Fragment {
         });
 
         //get references
-        recyclerView = v.findViewById(R.id.recycler_view_supplier);
-        recyclerAdapterSupplier = new RecyclerAdapterSupplier(this.getActivity(), mListSupplier);
+        recyclerView = v.findViewById(R.id.recycler_view_sparepart);
+        recyclerAdapterSparepart = new RecyclerAdapterSparepart(this.getActivity(), mListSparepart);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext().getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(recyclerAdapterSupplier);
+        recyclerView.setAdapter(recyclerAdapterSparepart);
 
-        recyclerView.addOnItemTouchListener(new RecyclerAdapterSupplier(getContext(), recyclerView, new ClickListener() {
+        recyclerView.addOnItemTouchListener(new RecyclerAdapterSparepart(getContext(), recyclerView, new ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                sup = supList.get(position);
+                spare = spareList.get(position);
 
                 //mindah data sup pake json
                 Intent intent = new Intent(getContext(), TampilSupplier.class);
-                intent.putExtra("supplier_object", new Gson().toJson(sup));
+                intent.putExtra("supplier_object", new Gson().toJson(spare));
                 startActivity(intent);
             }
 
             @Override
             public void onLongClick(View view, int position) {
-                sup = supList.get(position);
+                spare = spareList.get(position);
                 Log.d("long click", "long click pressed");
 //                Intent i = new Intent(Intent.ACTION_CALL);
 //                i.setData(Uri.parse(sup.getAlamat_supplier()));
 //                startActivity(i);
             }
         }));
-        getSupplier();
+        getSparepart();
 
 
 
         return v;
     }
 
-    private void getSupplier() {
+    private void getSparepart() {
         final ProgressDialog progressDialog = new ProgressDialog(getContext());
         progressDialog.setMessage("Loading...");
         progressDialog.show();
 
-        Call<List<supplier>> call = apiInterface.getSupplier();
-        call.enqueue(new Callback<List<supplier>>() {
+        Call<List<sparepart>> call = apiInterface.getSparepart();
+        call.enqueue(new Callback<List<sparepart>>() {
             @Override
-            public void onResponse(Call<List<supplier>> call, Response<List<supplier>> response) {
+            public void onResponse(Call<List<sparepart>> call, Response<List<sparepart>> response) {
                 if(response.isSuccessful()) {
-                    supList = response.body();
+                    spareList = response.body();
 
                     progressDialog.dismiss();
 
-                    recyclerAdapterSupplier.notifyDataSetChanged();
-                    recyclerAdapterSupplier = new RecyclerAdapterSupplier(getContext(), response.body()); //getresult()
-                    recyclerView.setAdapter(recyclerAdapterSupplier);
+                    recyclerAdapterSparepart.notifyDataSetChanged();
+                    recyclerAdapterSparepart = new RecyclerAdapterSparepart(getContext(), response.body()); //getresult()
+                    recyclerView.setAdapter(recyclerAdapterSparepart);
                 }
                 else {
                     progressDialog.dismiss();
@@ -148,7 +146,7 @@ public class SparepartTampilFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<List<supplier>> call, Throwable t) {
+            public void onFailure(Call<List<sparepart>> call, Throwable t) {
                 Log.e("onFailureTampil", t.getMessage());
             }
         });
@@ -157,12 +155,12 @@ public class SparepartTampilFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        //recyclerAdapterSupplier = new RecyclerAdapterSupplier(this.getActivity(), mListSupplier);
+        //recyclerAdapterSupplier = new RecyclerAdapterSparepart(this.getActivity(), mListSupplier);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        getSupplier();
+        getSparepart();
     }
 }

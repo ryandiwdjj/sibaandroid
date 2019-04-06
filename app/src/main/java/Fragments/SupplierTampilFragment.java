@@ -1,9 +1,7 @@
 package Fragments;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,7 +12,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.SearchView;
 import android.widget.Toast;
 
@@ -27,9 +24,10 @@ import java.util.List;
 
 import Models.supplier;
 import Recycler.ClickListener;
-import Recycler.RecyclerAdapterSupplier;
+import Recycler.RecyclerAdapterSparepart;
 import API.ApiClient;
 import API.ApiInterface;
+import Recycler.RecyclerAdapterSupplier;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -74,7 +72,7 @@ public class SupplierTampilFragment extends Fragment {
 //                    @Override
 //                    public void onResponse(Call<List<supplier>> call, Response<List<supplier>> response) {
 //                        recyclerAdapterSupplier.notifyDataSetChanged();
-//                        recyclerAdapterSupplier = new RecyclerAdapterSupplier(getContext(), response.body()); //getresult()
+//                        recyclerAdapterSupplier = new RecyclerAdapterSparepart(getContext(), response.body()); //getresult()
 //                        recyclerView.setAdapter(recyclerAdapterSupplier);
 //                    }
 //
@@ -96,7 +94,7 @@ public class SupplierTampilFragment extends Fragment {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(recyclerAdapterSupplier);
 
-        recyclerView.addOnItemTouchListener(new RecyclerAdapterSupplier(getContext(), recyclerView, new ClickListener() {
+        recyclerView.addOnItemTouchListener(new RecyclerAdapterSparepart(getContext(), recyclerView, new ClickListener() {
             @Override
             public void onClick(View view, int position) {
                 sup = supList.get(position);
@@ -157,7 +155,7 @@ public class SupplierTampilFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        //recyclerAdapterSupplier = new RecyclerAdapterSupplier(this.getActivity(), mListSupplier);
+        //recyclerAdapterSupplier = new RecyclerAdapterSparepart(this.getActivity(), mListSupplier);
     }
 
     @Override

@@ -37,15 +37,20 @@ public interface ApiInterface {
     Call<supplier> deleteSupplier(@Path("id") int id);
 
     ////////////////////////////////////////////////////////////////////////////////////////////////CRUD SPAREPART
-    @GET("spareparts")
+    @GET("sparepart")
     Call<List<sparepart>> getSparepart();
 
-//    @POST("sparepart/store")
-//    @FormUrlEncoded
-//    Call<sparepart> addSparepart(@Field("nama_supplier")String nama_supplier,
-//                               @Field("sales_supplier") String sales_supplier,
-//                               @Field("no_telp_supplier") String no_telp_supplier,
-//                               @Field("alamat_supplier") String alamat_supplier);
+    @POST("sparepart/store")
+    @FormUrlEncoded
+    Call<sparepart> addSparepart(@Field("kode_sparepart")String kode_sparepart,
+                                 @Field("nama_sparepart") String nama_sparepart,
+                                 @Field("merk_sparepart") String merk_sparepart,
+                                 @Field("tipe_sparepart") String tipe_sparepart,
+                                 @Field("gambar_sparepart") String gambar_sparepart,
+                                 @Field("jumlah_stok_sparepart") Integer jumlah_stok_sparepart,
+                                 @Field("harga_beli_sparepart") Float harga_beli_sparepart,
+                                 @Field("harga_jual_sparepart") Float harga_jual_sparepart,
+                                 @Field("jumlah_minimal") Integer jumlah_minimal);
 
     @PUT("sparepart/{id}")
     Call<supplier> updateSparepart(@Path("id") int id, @Body sparepart sparepart);
