@@ -72,7 +72,7 @@ public class SupplierTampilFragment extends Fragment {
 //                    @Override
 //                    public void onResponse(Call<List<supplier>> call, Response<List<supplier>> response) {
 //                        recyclerAdapterSupplier.notifyDataSetChanged();
-//                        recyclerAdapterSupplier = new RecyclerAdapterSparepart(getContext(), response.body()); //getresult()
+//                        recyclerAdapterSupplier = new RecyclerAdapterSparepart(getContext(), response.body());
 //                        recyclerView.setAdapter(recyclerAdapterSupplier);
 //                    }
 //

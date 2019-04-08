@@ -1,81 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginTop="?attr/actionBarSize"
     android:padding="25dp"
+    android:orientation="vertical"
     tools:context="Fragments.SupplierTambahFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TableRow
-        android:layout_marginTop="10dp"
-        android:minHeight="50dp">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="start"
-            android:text="Nama Supplier" />
+    <com.rengwuxian.materialedittext.MaterialEditText
+        android:id="@+id/nama_supplier_txt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Nama Supplier"
+        android:inputType="textPersonName"
+        app:met_floatingLabel="normal" />
 
-        <EditText
-            android:id="@+id/nama_supplier_txt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textPersonName"/>
-    </TableRow>
-    <TableRow
-        android:minHeight="50dp">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="start"
-            android:text="Nama Sales" />
+    <com.rengwuxian.materialedittext.MaterialEditText
+        android:id="@+id/sales_supplier_txt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Nama Sales"
+        android:inputType="textPersonName"
+        app:met_floatingLabel="normal" />
 
-        <EditText
-            android:id="@+id/sales_supplier_txt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textPersonName"/>
-    </TableRow>
-    <TableRow
-        android:minHeight="50dp">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="start"
-            android:text="Nomor Telepon Supplier" />
-        <EditText
-            android:id="@+id/no_telp_supplier_txt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="number"/>
-    </TableRow>
-    <TableRow
-        android:minHeight="50dp">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="start"
-            android:text="Alamat Supplier" />
-        <EditText
-            android:id="@+id/alamat_supplier_txt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="text"/>
-    </TableRow>
+    <com.rengwuxian.materialedittext.MaterialEditText
+        android:id="@+id/no_telp_supplier_txt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Nomor Telepon Supplier"
+        android:inputType="number"
+        app:met_floatingLabel="normal" />
 
-    <TableRow
-        android:minHeight="50dp">
-        <Button
-            android:id="@+id/tambah_supplier"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:gravity="center"
-            android:text="Tambah Supplier"/>
-    </TableRow>
-</TableLayout>
+    <com.rengwuxian.materialedittext.MaterialEditText
+        android:id="@+id/alamat_supplier_txt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Alamat Supplier"
+        android:inputType="text"
+        app:met_floatingLabel="normal" />
+
+    <Button
+        android:id="@+id/tambah_supplier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
+        android:text="Tambah Supplier" />
+
+</LinearLayout>

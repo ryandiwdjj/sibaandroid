@@ -16,14 +16,13 @@ import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.example.siba.R;
-import com.example.siba.TampilSupplier;
+import com.example.siba.TampilSparepart;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import Models.sparepart;
-import Models.supplier;
 import Recycler.ClickListener;
 import Recycler.RecyclerAdapterSparepart;
 import API.ApiClient;
@@ -66,22 +65,6 @@ public class SparepartTampilFragment extends Fragment {
                 recyclerAdapterSparepart.getSearchFilter().filter(newText);
                 Log.d("onQueryTextChange","triggered");
 
-//                Call<List<supplier>> call = apiInterface.getSupplierByName(newText);
-//
-//                call.enqueue(new Callback<List<supplier>>() {
-//                    @Override
-//                    public void onResponse(Call<List<supplier>> call, Response<List<supplier>> response) {
-//                        recyclerAdapterSupplier.notifyDataSetChanged();
-//                        recyclerAdapterSupplier = new RecyclerAdapterSparepart(getContext(), response.body()); //getresult()
-//                        recyclerView.setAdapter(recyclerAdapterSupplier);
-//                    }
-//
-//                    @Override
-//                    public void onFailure(Call<List<supplier>> call, Throwable t) {
-//
-//                    }
-//                });
-
                 return false;
             }
         });
@@ -98,10 +81,9 @@ public class SparepartTampilFragment extends Fragment {
             @Override
             public void onClick(View view, int position) {
                 spare = spareList.get(position);
-
                 //mindah data sup pake json
-                Intent intent = new Intent(getContext(), TampilSupplier.class);
-                intent.putExtra("supplier_object", new Gson().toJson(spare));
+                Intent intent = new Intent(getContext(), TampilSparepart.class);
+                intent.putExtra("sparepart_object", new Gson().toJson(spare));
                 startActivity(intent);
             }
 
@@ -109,9 +91,6 @@ public class SparepartTampilFragment extends Fragment {
             public void onLongClick(View view, int position) {
                 spare = spareList.get(position);
                 Log.d("long click", "long click pressed");
-//                Intent i = new Intent(Intent.ACTION_CALL);
-//                i.setData(Uri.parse(sup.getAlamat_supplier()));
-//                startActivity(i);
             }
         }));
         getSparepart();
@@ -155,7 +134,7 @@ public class SparepartTampilFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        //recyclerAdapterSupplier = new RecyclerAdapterSparepart(this.getActivity(), mListSupplier);
+        //recyclerAdapterSparepart = new RecyclerAdapterSparepart(this.getActivity(), mListSparepart);
     }
 
     @Override

@@ -1,15 +1,38 @@
 package Models;
 
+import android.media.Image;
+
+import com.google.gson.annotations.SerializedName;
+
 public class sparepart {
+    @SerializedName("id")
     Integer id_sparepart;
+
+    @SerializedName("kode_sparepart")
     String kode_sparepart;
+
+    @SerializedName("nama_sparepart")
     String nama_sparepart;
+
+    @SerializedName("merk_sparepart")
     String merk_sparepart;
+
+    @SerializedName("tipe_sparepart")
     String tipe_sparepart;
+
+    @SerializedName("gambar_sparepart")
     String gambar_sparepart;
+
+    @SerializedName("jumlah_stok_sparepart")
     Integer jumlah_stok_sparepart;
+
+    @SerializedName("harga_beli_sparepart")
     Float harga_beli_sparepart;
+
+    @SerializedName("harga_jual_sparepart")
     Float harga_jual_sparepart;
+
+    @SerializedName("jumlah_minimal")
     Integer jumlah_minimal;
 
     public sparepart(Integer id_sparepart, String kode_sparepart, String nama_sparepart, String merk_sparepart, String tipe_sparepart, String gambar_sparepart, Integer jumlah_stok_sparepart, Float harga_beli_sparepart, Float harga_jual_sparepart, Integer jumlah_minimal) {
@@ -24,6 +47,18 @@ public class sparepart {
         this.harga_jual_sparepart = harga_jual_sparepart;
         this.jumlah_minimal = jumlah_minimal;
     }
+
+//    public sparepart(Integer id_sparepart, String kode_sparepart, String nama_sparepart, String merk_sparepart, String tipe_sparepart, Integer jumlah_stok_sparepart, Float harga_beli_sparepart, Float harga_jual_sparepart, Integer jumlah_minimal) {
+//        this.id_sparepart = id_sparepart;
+//        this.kode_sparepart = kode_sparepart;
+//        this.nama_sparepart = nama_sparepart;
+//        this.merk_sparepart = merk_sparepart;
+//        this.tipe_sparepart = tipe_sparepart;
+//        this.jumlah_stok_sparepart = jumlah_stok_sparepart;
+//        this.harga_beli_sparepart = harga_beli_sparepart;
+//        this.harga_jual_sparepart = harga_jual_sparepart;
+//        this.jumlah_minimal = jumlah_minimal;
+//    }
 
     public Integer getId_sparepart() {
         return id_sparepart;

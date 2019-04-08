@@ -69,6 +69,7 @@ public class TampilSupplier extends AppCompatActivity {
         //toolbar
         Toolbar myToolBar = findViewById(R.id.supplier_toolbar);
         myToolBar.setTitle("Edit Supplier");
+        //myToolBar.setTitle(sup.getNama_supplier());
         myToolBar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
         setSupportActionBar(myToolBar);
 
@@ -94,6 +95,7 @@ public class TampilSupplier extends AppCompatActivity {
         sales_sup.setText(sup.getSales_supplier());
         no_telp_sup.setText(sup.getNo_telp_supplier());
         alamat_sup.setText(sup.getAlamat_supplier());
+
 
         simpan_btn.setOnClickListener(new View.OnClickListener() {
             @Override
