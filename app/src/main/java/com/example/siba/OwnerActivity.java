@@ -3,22 +3,27 @@ package com.example.siba;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageButton;
+import android.widget.LinearLayout;
 
 public class OwnerActivity extends AppCompatActivity {
 
-    ImageButton supplier_button;
-    ImageButton sparepart_button;
+    LinearLayout supplier_button;
+    LinearLayout sparepart_button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_owner);
 
-        supplier_button = findViewById(R.id.supplierBtn);
-        sparepart_button = findViewById(R.id.sparepartBtn);
+        Toolbar myToolBar = findViewById(R.id.owner_toolbar);
+        myToolBar.setTitle("Owner");
+        myToolBar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+        setSupportActionBar(myToolBar);
+
+        supplier_button = findViewById(R.id.supplier_btn);
+        sparepart_button = findViewById(R.id.sparepart_btn);
 
         //SUPPLIER IMAGE BUTTON
         supplier_button.setOnClickListener(new View.OnClickListener() {

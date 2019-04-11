@@ -126,6 +126,7 @@ public class SparepartTampilFragment extends Fragment {
 
             @Override
             public void onFailure(Call<List<sparepart>> call, Throwable t) {
+                progressDialog.dismiss();
                 Log.e("onFailureTampil", t.getMessage());
             }
         });

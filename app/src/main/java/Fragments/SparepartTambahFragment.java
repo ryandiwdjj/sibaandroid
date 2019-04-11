@@ -211,6 +211,7 @@ public class SparepartTambahFragment extends Fragment {
 
             @Override
             public void onFailure(Call<sparepart> call, Throwable t) {
+                progressDialog.dismiss();
                 Toast.makeText(getContext().getApplicationContext(), t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });

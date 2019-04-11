@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Switch;
@@ -27,6 +28,11 @@ public class LoginActivity extends AppCompatActivity {
         guest_switch = findViewById(R.id.guestSwitch);
         login_btn = findViewById(R.id.loginBtn);
 
+        Toolbar myToolBar = findViewById(R.id.owner_toolbar);
+        myToolBar.setTitle("Login");
+        myToolBar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+        setSupportActionBar(myToolBar);
+
         guest_switch.setChecked(true);
         password_txt.setVisibility(View.INVISIBLE);
         guest_switch.setOnClickListener(new View.OnClickListener() {
@@ -39,6 +45,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
                 else {
                     //password_txt.setEnabled(true);
+                    password_txt.setText("");
                     password_txt.setVisibility(View.VISIBLE);
                     //Toast.makeText(LoginActivity.this, "isNotChecked", Toast.LENGTH_SHORT).show();
                 }

@@ -5,7 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/colorPrimary"
     tools:context=".LoginActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/owner_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:elevation="4dp" />
 
     <ImageView
         android:id="@+id/loginIc"
@@ -14,14 +21,16 @@
         android:layout_gravity="center"
         android:layout_marginTop="100dp"
         android:scaleType="fitCenter"
-        app:srcCompat="@drawable/ic_atmaauto_blue" />
+        app:srcCompat="@drawable/ic_atmaauto" />
 
     <EditText
         android:id="@+id/phoneTxt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="50dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/rounded_border"
+        android:padding="10dp"
         android:ems="10"
         android:hint="Phone Number"
         android:inputType="phone" />
@@ -41,7 +50,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="50dp"
+        android:background="@drawable/rounded_border"
         android:layout_marginTop="10dp"
+        android:padding="10dp"
         android:ems="10"
         android:hint="Password"
         android:inputType="textPassword" />
@@ -51,6 +62,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:background="@drawable/ripple_effect"
+        android:backgroundTint="@color/colorAccent"
         android:layout_marginTop="50dp"
         android:text="Login" />
 

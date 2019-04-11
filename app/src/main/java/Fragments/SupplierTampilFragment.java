@@ -147,6 +147,8 @@ public class SupplierTampilFragment extends Fragment {
 
             @Override
             public void onFailure(Call<List<supplier>> call, Throwable t) {
+                progressDialog.dismiss();
+
                 Log.e("onFailureTampil", t.getMessage());
         }
         });
