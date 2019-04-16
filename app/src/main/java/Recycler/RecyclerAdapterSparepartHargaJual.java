@@ -10,53 +10,58 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.siba.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import Models.supplier;
+import Models.sparepart;
 
 
-public class RecyclerAdapterSupplier extends RecyclerView.Adapter<RecyclerAdapterSupplier.MyViewHolder>
-        implements RecyclerView.OnItemTouchListener {
+public class RecyclerAdapterSparepartHargaJual extends RecyclerView.Adapter<RecyclerAdapterSparepartHargaJual.MyViewHolder> implements RecyclerView.OnItemTouchListener {
     private Context context;
-    private List<supplier> supplierList;
-    private List<supplier> supplierListFull;
+    private List<sparepart> sparepartList;
+    private List<sparepart> sparepartListFull;
     private ClickListener clicklistener;
     private GestureDetector gestureDetector;
 
-    public RecyclerAdapterSupplier(Context context, List<supplier> supplierList) {
+    public RecyclerAdapterSparepartHargaJual(Context context, List<sparepart> sparepartList) {
         this.context = context;
-        this.supplierList = supplierList;
+        this.sparepartList = sparepartList;
     }
 
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View v = LayoutInflater.from(context).inflate(R.layout.recycler_view_supplier, viewGroup, false);
+        View v = LayoutInflater.from(context).inflate(R.layout.recycler_view_sparepart, viewGroup, false);
         final MyViewHolder holder = new MyViewHolder(v);
 
-        supplierListFull = new ArrayList<>(supplierList);
+        sparepartListFull = new ArrayList<>(sparepartList);
 
         return holder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerAdapterSupplier.MyViewHolder myViewHolder, int i) {
-        supplier sup = supplierList.get(i);
-        myViewHolder.nama_supplier.setText(sup.getNama_supplier());
-        myViewHolder.sales_supplier.setText(sup.getSales_supplier());
+    public void onBindViewHolder(@NonNull RecyclerAdapterSparepartHargaJual.MyViewHolder myViewHolder, int i) {
+        sparepart spare = sparepartList.get(i);
+        myViewHolder.nama_sparepart.setText(spare.getNama_sparepart());
+        myViewHolder.harga_jual.setText("Rp. " + spare.getHarga_jual_sparepart().toString()); //get harga jual
+        Picasso.get().load(spare.getGambar_sparepart()).resize(200,200)
+                .centerCrop().placeholder(R.drawable.ic_atmaauto).into(myViewHolder.gambar_sparepart);
+        Log.d("gambar_sparepart", spare.getGambar_sparepart());
+        //set image
     }
 
     @Override
     public int getItemCount() {
-        return supplierList.size();
+        return sparepartList.size();
     }
 
-    public Filter getFilter() {
+    public Filter getSearchFilter() {
         return exampleFilter;
     }
 
@@ -64,20 +69,17 @@ public class RecyclerAdapterSupplier extends RecyclerView.Adapter<RecyclerAdapte
 
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
-            List<supplier> filteredList = new ArrayList<>();
+            List<sparepart> filteredList = new ArrayList<>();
 
             if (constraint == null || constraint.length() == 0) {
-                filteredList.addAll(supplierListFull);
+                filteredList.addAll(sparepartListFull);
             }
             else {
                 Log.d("performFiltering","in");
                 String filterPattern = constraint.toString().toLowerCase().trim();
 
-                for (supplier item : supplierListFull) {
-                    if (item.getNama_supplier().toLowerCase().contains(filterPattern)) {
-                        filteredList.add(item);
-                    }
-                    else if(item.getSales_supplier().toLowerCase().contains(filterPattern)) {
+                for (sparepart item : sparepartListFull) {
+                    if (item.getNama_sparepart().toLowerCase().contains(filterPattern)) {
                         filteredList.add(item);
                     }
                 }
@@ -91,14 +93,14 @@ public class RecyclerAdapterSupplier extends RecyclerView.Adapter<RecyclerAdapte
 
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
-            supplierList.clear();
-            supplierList.addAll((List)results.values);
+            sparepartList.clear();
+            sparepartList.addAll((List)results.values);
             notifyDataSetChanged();
         }
     };
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////Click listener
-    public RecyclerAdapterSupplier(Context context, final RecyclerView recycleView, final ClickListener clicklistener){
+    public RecyclerAdapterSparepartHargaJual(Context context, final RecyclerView recycleView, final ClickListener clicklistener){
 
         this.clicklistener=clicklistener;
         gestureDetector=new GestureDetector(context,new GestureDetector.SimpleOnGestureListener(){
@@ -138,13 +140,15 @@ public class RecyclerAdapterSupplier extends RecyclerView.Adapter<RecyclerAdapte
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private TextView nama_supplier;
-        private TextView sales_supplier;
+        private TextView nama_sparepart;
+        private TextView harga_jual;
+        private ImageView gambar_sparepart;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            nama_supplier = itemView.findViewById(R.id.supplier_recycler_h1);
-            sales_supplier = itemView.findViewById(R.id.supplier_recycler_h2);
+            nama_sparepart = itemView.findViewById(R.id.sparepart_recycler_h1);
+            harga_jual = itemView.findViewById(R.id.sparepart_recycler_h2);
+            gambar_sparepart = itemView.findViewById(R.id.sparepart_recycler_img);
         }
         @Override
         public void onClick(View v) {
@@ -152,4 +156,5 @@ public class RecyclerAdapterSupplier extends RecyclerView.Adapter<RecyclerAdapte
         }
     }
 }
+
 

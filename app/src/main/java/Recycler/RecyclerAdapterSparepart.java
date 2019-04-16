@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.siba.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +22,8 @@ import java.util.List;
 import Models.sparepart;
 
 
-public class RecyclerAdapterSparepart extends RecyclerView.Adapter<RecyclerAdapterSparepart.MyViewHolder> implements RecyclerView.OnItemTouchListener {
+public class RecyclerAdapterSparepart extends RecyclerView.Adapter<RecyclerAdapterSparepart.MyViewHolder>
+        implements RecyclerView.OnItemTouchListener {
     private Context context;
     private List<sparepart> sparepartList;
     private List<sparepart> sparepartListFull;
@@ -48,7 +50,10 @@ public class RecyclerAdapterSparepart extends RecyclerView.Adapter<RecyclerAdapt
     public void onBindViewHolder(@NonNull RecyclerAdapterSparepart.MyViewHolder myViewHolder, int i) {
         sparepart spare = sparepartList.get(i);
         myViewHolder.nama_sparepart.setText(spare.getNama_sparepart());
-        myViewHolder.harga_jual.setText("Rp. " + spare.getHarga_jual_sparepart().toString());
+        myViewHolder.harga_jual.setText("Rp. " + spare.getHarga_beli_sparepart().toString()); //get harga beli sparepart
+        Picasso.get().load(spare.getGambar_sparepart()).resize(200,200)
+                .centerCrop().placeholder(R.drawable.ic_atmaauto).into(myViewHolder.gambar_sparepart);
+        Log.d("gambar_sparepart", spare.getGambar_sparepart());
         //set image
     }
 

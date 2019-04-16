@@ -11,6 +11,7 @@ public class OwnerActivity extends AppCompatActivity {
 
     LinearLayout supplier_button;
     LinearLayout sparepart_button;
+    LinearLayout pengadaan_button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +25,7 @@ public class OwnerActivity extends AppCompatActivity {
 
         supplier_button = findViewById(R.id.supplier_btn);
         sparepart_button = findViewById(R.id.sparepart_btn);
+        pengadaan_button = findViewById(R.id.pengadaan_btn);
 
         //SUPPLIER IMAGE BUTTON
         supplier_button.setOnClickListener(new View.OnClickListener() {
@@ -39,6 +41,15 @@ public class OwnerActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent sparepart_i = new Intent(OwnerActivity.this, OwnerSparepartActivity.class);
+                startActivity(sparepart_i);
+            }
+        });
+
+        //PENGADAAN IMAGE BUTTON
+        pengadaan_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent sparepart_i = new Intent(OwnerActivity.this, OwnerPengadaanActivity.class);
                 startActivity(sparepart_i);
             }
         });

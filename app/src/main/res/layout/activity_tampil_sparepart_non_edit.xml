@@ -121,38 +121,6 @@
                 android:ems="10"
                 android:hint="Jumlah Minimal Sparepart"
                 app:met_floatingLabel="normal" />
-
-            <Switch
-                android:id="@+id/edit_switch"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="30dp"
-                android:checked="false"
-                android:padding="20dp"
-                android:text="Nyalakan Perubahan" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:paddingHorizontal="20dp">
-
-                <Button
-                    android:id="@+id/simpan_spare_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="50dp"
-                    android:text="Simpan" />
-
-                <Button
-                    android:id="@+id/hapus_spare_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Hapus" />
-            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
