@@ -94,40 +94,39 @@ public class SparepartTampilFragment extends Fragment {
             public void onLongClick(View view, int position) {
                 spare = spareList.get(position);
                 Log.d("long click", "long click pressed");
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setTitle("Hapus sparepart " + spare.getNama_sparepart() + "?");
+                builder.setNegativeButton("Tidak", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
 
-                AlertDialog builder = new AlertDialog.Builder(getActivity()).create();
-                builder.setTitle("Hapus Sparepart?");
-                builder.setButton("Ya", new DialogInterface.OnClickListener() {
+                builder.setPositiveButton("Ya", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Log.d("onclickya", "yey");
-//                        //method delete
-//                        apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
-//                        Call<sparepart> call = apiInterface.deleteSparepart(spare.getId_sparepart());
-//
-//                        call.enqueue(new Callback<sparepart>() {
-//                            @Override
-//                            public void onResponse(Call<sparepart> call, Response<sparepart> response) {
-//                                if(response.isSuccessful()) {
-//                                    Toast.makeText(getActivity(), "Sparepart Terhapus", Toast.LENGTH_SHORT).show();
-//                                }
-//                                else {
-//                                    Toast.makeText(getActivity(), "Cek Koneksi anda", Toast.LENGTH_SHORT).show();
-//                                }
-//                            }
-//                            @Override
-//                            public void onFailure(Call<sparepart> call, Throwable t) {
-//                                Log.e("onFailure", t.getMessage());
-//
-//                            }
-//                        });
+                        //method delete
+                        apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
+                        Call<sparepart> call = apiInterface.deleteSparepart(spare.getId_sparepart());
+
+                        call.enqueue(new Callback<sparepart>() {
+                            @Override
+                            public void onResponse(Call<sparepart> call, Response<sparepart> response) {
+                                if(response.isSuccessful()) {
+                                    Toast.makeText(getContext(), "Sparepart Terhapus", Toast.LENGTH_SHORT).show();
+                                }
+                                else {
+                                    Toast.makeText(getContext(), "Cek Koneksi anda", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                            @Override
+                            public void onFailure(Call<sparepart> call, Throwable t) {
+                                Log.e("onFailure", t.getMessage());
+                            }
+                        });
                     }
                 });
-                builder.setButton("Tidak", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                    }
-                });
+                builder.show();
             }
         }));
         getSparepart();

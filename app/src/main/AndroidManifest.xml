@@ -21,9 +21,11 @@
         <activity android:name=".CsActivity" />
         <activity
             android:name=".TampilSparepart"
+            android:windowSoftInputMode="stateHidden|adjustResize"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".TampilSparepartNonEdit"
+            android:windowSoftInputMode="stateHidden|adjustResize"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".TampilSupplier"

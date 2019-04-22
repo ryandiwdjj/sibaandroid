@@ -51,6 +51,8 @@ public class RecyclerAdapterSparepart extends RecyclerView.Adapter<RecyclerAdapt
         sparepart spare = sparepartList.get(i);
         myViewHolder.nama_sparepart.setText(spare.getNama_sparepart());
         myViewHolder.harga_jual.setText("Rp. " + spare.getHarga_beli_sparepart().toString()); //get harga beli sparepart
+        myViewHolder.kode_spare.setText(spare.getKode_sparepart());
+
         Picasso.get().load(spare.getGambar_sparepart()).resize(200,200)
                 .centerCrop().placeholder(R.drawable.ic_atmaauto).into(myViewHolder.gambar_sparepart);
         Log.d("gambar_sparepart", spare.getGambar_sparepart());
@@ -143,6 +145,7 @@ public class RecyclerAdapterSparepart extends RecyclerView.Adapter<RecyclerAdapt
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView nama_sparepart;
         private TextView harga_jual;
+        private TextView kode_spare;
         private ImageView gambar_sparepart;
 
         public MyViewHolder(@NonNull View itemView) {
@@ -150,6 +153,7 @@ public class RecyclerAdapterSparepart extends RecyclerView.Adapter<RecyclerAdapt
             nama_sparepart = itemView.findViewById(R.id.sparepart_recycler_h1);
             harga_jual = itemView.findViewById(R.id.sparepart_recycler_h2);
             gambar_sparepart = itemView.findViewById(R.id.sparepart_recycler_img);
+            kode_spare = itemView.findViewById(R.id.sparepart_recycler_h3);
         }
         @Override
         public void onClick(View v) {

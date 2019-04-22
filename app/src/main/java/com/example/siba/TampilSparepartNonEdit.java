@@ -39,22 +39,12 @@ public class TampilSparepartNonEdit extends AppCompatActivity {
     private EditText nama_sparepart;
     private EditText merk_sparepart;
     private EditText tipe_sparepart;
+    private EditText harga_jual;
     private ImageView gambar_sparepart;
-    private EditText jumlah_stok_sparepart;
-    private EditText harga_beli_sparepart;
-    private EditText harga_jual_sparepart;
-    private EditText jumlah_minimal;
-
-    private ApiInterface apiInterface;
 
     private sparepart spare;
 
-    ProgressDialog progressDialog;
-
     private Uri selectedImage;
-
-    private Bitmap ImageBitmap;
-    private Bitmap bitmap;
 
 
     @Override
@@ -65,7 +55,6 @@ public class TampilSparepartNonEdit extends AppCompatActivity {
             selectedImage = data.getData();
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
-                ImageBitmap=bitmap;
                 Picasso.get().load(selectedImage).resize(400,400).centerCrop().into(gambar_sparepart);
             }
             catch (Exception e) {
@@ -83,11 +72,8 @@ public class TampilSparepartNonEdit extends AppCompatActivity {
         nama_sparepart = findViewById(R.id.nama_sparepart_txt);
         merk_sparepart = findViewById(R.id.merk_sparepart_txt);
         tipe_sparepart = findViewById(R.id.tipe_sparepart_txt);
+        harga_jual = findViewById(R.id.harga_jual_sparepart_txt);
         gambar_sparepart = findViewById(R.id.gambar_sparepart_img); //ganti gambar
-        jumlah_stok_sparepart = findViewById(R.id.jumlah_stok_sparepart_txt);
-        harga_beli_sparepart = findViewById(R.id.harga_beli_sparepart_txt);
-        harga_jual_sparepart = findViewById(R.id.harga_jual_sparepart_txt);
-        jumlah_minimal = findViewById(R.id.jumlah_minimal_txt);
 
         EditTextEnabled(false);
 
@@ -120,13 +106,10 @@ public class TampilSparepartNonEdit extends AppCompatActivity {
             nama_sparepart.setText(spare.getNama_sparepart());
             merk_sparepart.setText(spare.getMerk_sparepart());
             tipe_sparepart.setText(spare.getTipe_sparepart());
+            harga_jual.setText(String.valueOf(spare.getHarga_jual_sparepart()));
 //            gambar_sparepart.setText(spare.getGambar_sparepart());
             Log.d("gambar_sparepart", spare.getGambar_sparepart());
             Picasso.get().load(spare.getGambar_sparepart()).resize(400,400).centerCrop().into(gambar_sparepart);
-            jumlah_stok_sparepart.setText(spare.getJumlah_stok_sparepart().toString());
-            harga_beli_sparepart.setText(spare.getHarga_beli_sparepart().toString());
-            harga_jual_sparepart.setText(spare.getHarga_jual_sparepart().toString());
-            jumlah_minimal.setText(spare.getJumlah_minimal().toString());
 
             //Toast.makeText(this, spare.getId_sparepart(), Toast.LENGTH_SHORT).show();
         }
@@ -148,11 +131,8 @@ public class TampilSparepartNonEdit extends AppCompatActivity {
         nama_sparepart.setEnabled(b);
         merk_sparepart.setEnabled(b);
         tipe_sparepart.setEnabled(b);
+        harga_jual.setEnabled(b);
         //gambar_sparepart.setEnabled(b); //ganti gambar
         gambar_sparepart.setEnabled(b);
-        jumlah_stok_sparepart.setEnabled(b);
-        harga_beli_sparepart.setEnabled(b);
-        harga_jual_sparepart.setEnabled(b);
-        jumlah_minimal.setEnabled(b);
     }
 }

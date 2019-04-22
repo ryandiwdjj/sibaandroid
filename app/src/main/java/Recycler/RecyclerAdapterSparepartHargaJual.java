@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.siba.R;
@@ -50,6 +51,9 @@ public class RecyclerAdapterSparepartHargaJual extends RecyclerView.Adapter<Recy
         sparepart spare = sparepartList.get(i);
         myViewHolder.nama_sparepart.setText(spare.getNama_sparepart());
         myViewHolder.harga_jual.setText("Rp. " + spare.getHarga_jual_sparepart().toString()); //get harga jual
+        Log.d("kode_sparepart",spare.getKode_sparepart());
+        myViewHolder.kode_spare.setText(spare.getKode_sparepart());
+
         Picasso.get().load(spare.getGambar_sparepart()).resize(200,200)
                 .centerCrop().placeholder(R.drawable.ic_atmaauto).into(myViewHolder.gambar_sparepart);
         Log.d("gambar_sparepart", spare.getGambar_sparepart());
@@ -142,6 +146,7 @@ public class RecyclerAdapterSparepartHargaJual extends RecyclerView.Adapter<Recy
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView nama_sparepart;
         private TextView harga_jual;
+        private TextView kode_spare;
         private ImageView gambar_sparepart;
 
         public MyViewHolder(@NonNull View itemView) {
@@ -149,6 +154,7 @@ public class RecyclerAdapterSparepartHargaJual extends RecyclerView.Adapter<Recy
             nama_sparepart = itemView.findViewById(R.id.sparepart_recycler_h1);
             harga_jual = itemView.findViewById(R.id.sparepart_recycler_h2);
             gambar_sparepart = itemView.findViewById(R.id.sparepart_recycler_img);
+            kode_spare = itemView.findViewById(R.id.sparepart_recycler_h3);
         }
         @Override
         public void onClick(View v) {

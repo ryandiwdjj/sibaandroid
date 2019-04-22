@@ -21,6 +21,7 @@ import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 
 import API.ApiClient;
@@ -68,8 +69,8 @@ public class TampilSparepart extends AppCompatActivity {
             //the image URI
             selectedImage = data.getData();
             try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
-                ImageBitmap=bitmap;
+//                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
+//                ImageBitmap=bitmap;
                 Picasso.get().load(selectedImage).resize(400,400).centerCrop().into(gambar_sparepart);
             }
             catch (Exception e) {
@@ -150,6 +151,8 @@ public class TampilSparepart extends AppCompatActivity {
             harga_jual_sparepart.setText(spare.getHarga_jual_sparepart().toString());
             jumlah_minimal.setText(spare.getJumlah_minimal().toString());
 
+            selectedImage = Uri.parse(spare.getGambar_sparepart());
+
             //Toast.makeText(this, spare.getId_sparepart(), Toast.LENGTH_SHORT).show();
         }
         else {
@@ -185,49 +188,22 @@ public class TampilSparepart extends AppCompatActivity {
                         progressDialog.setMessage("Saving...");
                         progressDialog.show();
 
-                        updateFile(spare.getId_sparepart(), selectedImage, kode_sparepart.getText().toString(), nama_sparepart.getText().toString()
-                                ,merk_sparepart.getText().toString(), tipe_sparepart.getText().toString(), Integer.parseInt(jumlah_stok_sparepart.getText().toString())
-                                ,Float.parseFloat(harga_beli_sparepart.getText().toString()), Float.parseFloat(harga_jual_sparepart.getText().toString())
-                                ,Integer.parseInt(jumlah_minimal.getText().toString()));
+                        Log.d("selected image", selectedImage.toString());
+
+                        try {
+                            updateFile(spare.getId_sparepart(), kode_sparepart.getText().toString(), nama_sparepart.getText().toString()
+                                    , merk_sparepart.getText().toString(), tipe_sparepart.getText().toString(), Integer.parseInt(jumlah_stok_sparepart.getText().toString())
+                                    , Float.parseFloat(harga_beli_sparepart.getText().toString()), Float.parseFloat(harga_jual_sparepart.getText().toString())
+                                    , Integer.parseInt(jumlah_minimal.getText().toString()));
+                        }
+                        catch (Exception e) {
+                            Toast.makeText(TampilSparepart.this, "Gambar belum diubah", Toast.LENGTH_SHORT).show();
+                            progressDialog.dismiss();
+                        }
 
                     }
                 }
 
-                //method simpan
-//                apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
-//
-//                RequestBody kode_spare = RequestBody.create(MediaType.parse("multipart/form-data"), kode_sparepart);
-//                RequestBody nama_spare = RequestBody.create(MediaType.parse("multipart/form-data"), nama_sparepart);
-//                RequestBody merk_spare = RequestBody.create(MediaType.parse("multipart/form-data"), merk_sparepart);
-//                RequestBody tipe_spare = RequestBody.create(MediaType.parse("multipart/form-data"), tipe_sparepart);
-////        RequestBody gambar_spare = RequestBody.create(MediaType.parse("text"), "null");
-//                RequestBody requestFile = RequestBody.create(MediaType.parse("image/jpg"), file);
-//                RequestBody jumlah_stok = RequestBody.create(MediaType.parse("multipart/form-data"), jumlah_stok_sparepart.toString());
-//                RequestBody harga_beli_spare = RequestBody.create(MediaType.parse("multipart/form-data"), harga_beli.toString());
-//                RequestBody harga_jual_spare = RequestBody.create(MediaType.parse("multipart/form-data"), harga_jual.toString());
-//                RequestBody jumlah_min = RequestBody.create(MediaType.parse("multipart/form-data"), jumlah_minimal.toString());
-//
-//
-//                Call<sparepart> call = apiInterface.updateSparepart(spare.getId_sparepart(), spare);
-//
-//                call.enqueue(new Callback<sparepart>() {
-//                    @Override
-//                    public void onResponse(Call<sparepart> call, Response<sparepart> response) {
-//                        if(response.isSuccessful()) {
-//                            Toast.makeText(TampilSparepart.this, "Sparepart Diperbaharui", Toast.LENGTH_SHORT).show();
-//                            onBackPressed();
-//                        }
-//                        else {
-//                            Log.e("onresponseisfail", response.errorBody().toString());
-//                            Toast.makeText(TampilSparepart.this, "Cek Koneksi anda", Toast.LENGTH_SHORT).show();
-//                        }
-//                    }
-//                    @Override
-//                    public void onFailure(Call<sparepart> call, Throwable t) {
-//                        Log.e("onFailure", t.getMessage());
-//                        onBackPressed();
-//                    }
-//                });
             }
 
         });
@@ -273,26 +249,31 @@ public class TampilSparepart extends AppCompatActivity {
         jumlah_minimal.setEnabled(b);
     }
 
-    private void updateFile(Integer id_sparepart, Uri fileUri, String kode_sparepart, String nama_sparepart,
+    private void updateFile(Integer id_sparepart, String kode_sparepart, String nama_sparepart,
                             String merk_sparepart, String tipe_sparepart, Integer jumlah_stok_sparepart,
                             Float harga_beli, Float harga_jual, Integer jumlah_minimal) {
         //creating a file
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        try {
+            ImageBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         ImageBitmap.compress(Bitmap.CompressFormat.JPEG,100,baos);
         byte[] file =baos.toByteArray();
 //        File file = new File(getRealPathFromURI(fileUri));
 
         //RequestBody id_spare = RequestBody.create(MediaType.parse("multipart/form-data"), id_sparepart.toString());
-        RequestBody kode_spare = RequestBody.create(MediaType.parse("multipart/form-data"), kode_sparepart);
-        RequestBody nama_spare = RequestBody.create(MediaType.parse("multipart/form-data"), nama_sparepart);
-        RequestBody merk_spare = RequestBody.create(MediaType.parse("multipart/form-data"), merk_sparepart);
-        RequestBody tipe_spare = RequestBody.create(MediaType.parse("multipart/form-data"), tipe_sparepart);
+        RequestBody kode_spare = RequestBody.create(MediaType.parse("string"), kode_sparepart);
+        RequestBody nama_spare = RequestBody.create(MediaType.parse("text/plain"), nama_sparepart);
+        RequestBody merk_spare = RequestBody.create(MediaType.parse("text/plain"), merk_sparepart);
+        RequestBody tipe_spare = RequestBody.create(MediaType.parse("text/plain"), tipe_sparepart);
 //        RequestBody gambar_spare = RequestBody.create(MediaType.parse("text"), "null");
         RequestBody requestFile = RequestBody.create(MediaType.parse("image/jpg"), file);
-        RequestBody jumlah_stok = RequestBody.create(MediaType.parse("multipart/form-data"), jumlah_stok_sparepart.toString());
-        RequestBody harga_beli_spare = RequestBody.create(MediaType.parse("multipart/form-data"), harga_beli.toString());
-        RequestBody harga_jual_spare = RequestBody.create(MediaType.parse("multipart/form-data"), harga_jual.toString());
-        RequestBody jumlah_min = RequestBody.create(MediaType.parse("multipart/form-data"), jumlah_minimal.toString());
+        RequestBody jumlah_stok = RequestBody.create(MediaType.parse("text/plain"), jumlah_stok_sparepart.toString());
+        RequestBody harga_beli_spare = RequestBody.create(MediaType.parse("text/plain"), harga_beli.toString());
+        RequestBody harga_jual_spare = RequestBody.create(MediaType.parse("text/plain"), harga_jual.toString());
+        RequestBody jumlah_min = RequestBody.create(MediaType.parse("text/plain"), jumlah_minimal.toString());
 
         //creating our api
         ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
@@ -309,10 +290,11 @@ public class TampilSparepart extends AppCompatActivity {
             @Override
             public void onResponse(Call<sparepart> call, Response<sparepart> response) {
                 if (response.isSuccessful()) {
-                    Toast.makeText(getApplicationContext(), "File Uploaded Successfully...", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Data Berhasil diupdate", Toast.LENGTH_LONG).show();
                     progressDialog.dismiss();
+                    onBackPressed();
                 } else {
-                    Toast.makeText(getApplicationContext(), "Some error occurred...", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Cek koneksi anda", Toast.LENGTH_LONG).show();
                     progressDialog.dismiss();
                     try {
                         Log.e("onresponse error", response.errorBody().string());

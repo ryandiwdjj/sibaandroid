@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,6 +31,7 @@ public class SupplierTambahFragment extends Fragment implements View.OnClickList
     private EditText alamat_supplier;
     private Button tambah_supplier_btn;
 
+    FragmentManager fragmentManager = getFragmentManager();
 
     @Nullable
     @Override
@@ -72,9 +74,12 @@ public class SupplierTambahFragment extends Fragment implements View.OnClickList
                             progressDialog.dismiss();
                             if (response.isSuccessful()) {
                                 Toast.makeText(getContext().getApplicationContext(), "Supplier ditambah", Toast.LENGTH_SHORT).show();
+                                progressDialog.dismiss();
+                                fragmentManager.beginTransaction().replace(R.id.frame_supplier, new SupplierTampilFragment()).commit();
                             }
                             else {
                                 Toast.makeText(getContext().getApplicationContext(), "Cek Koneksi Anda", Toast.LENGTH_SHORT).show();
+                                progressDialog.dismiss();
                             }
                         }
 

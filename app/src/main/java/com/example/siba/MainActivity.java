@@ -1,14 +1,15 @@
 package com.example.siba;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -18,11 +19,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +34,6 @@ import API.ApiClient;
 import API.ApiInterface;
 import Models.sparepart;
 import Recycler.ClickListener;
-import Recycler.RecyclerAdapterSparepart;
 import Recycler.RecyclerAdapterSparepartHargaJual;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -48,6 +50,7 @@ public class MainActivity extends AppCompatActivity
     ApiInterface apiInterface;
     private sparepart spare;
     private LinearLayout login_btn;
+    private ImageView diag_image_view;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +63,8 @@ public class MainActivity extends AppCompatActivity
 
         SearchView search_txt = findViewById(R.id.search_box_txt);
         login_btn = findViewById(R.id.login_btn);
+        diag_image_view = findViewById(R.id.dialog_image_view);
+
 
 
         search_txt.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -100,7 +105,17 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onLongClick(View view, int position) {
                 spare = spareList.get(position);
-                Log.d("long click", "long click pressed");
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                LayoutInflater factory = LayoutInflater.from(MainActivity.this);
+
+//                Picasso.get().load(spare.getGambar_sparepart()).into(diag_image_view);
+
+                final View imageView = factory.inflate(R.layout.image_view, null);
+
+                builder.setView(imageView);
+
+                builder.show();
+                Log.d("long click", spare.getId_sparepart().toString());
             }
         }));
         getSparepart();

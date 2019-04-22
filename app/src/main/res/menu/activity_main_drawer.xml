@@ -18,11 +18,12 @@
             android:title="Riwayat" />
     </group>
 
-    <item android:title="Account">
+    <item
+        android:title="Akun">
         <menu>
             <item
                 android:id="@+id/log_in"
-
+                android:icon="@drawable/ic_login"
                 android:title="Masuk Akun" />
             <item
                 android:id="@+id/log_out"

@@ -13,12 +13,31 @@
         android:orientation="vertical"
         android:padding="25dp">
 
-    <com.rengwuxian.materialedittext.MaterialEditText
-        android:id="@+id/kode_sparepart_txt"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Kode Sparepart"
-        app:met_floatingLabel="normal" />
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Kode Sparepart"
+            android:layout_marginRight="20dp"
+            android:textSize="15dp"/>
+        <Spinner
+            android:id="@+id/letak_spare"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp">
+        </Spinner>
+
+        <Spinner
+            android:id="@+id/ruang_spare"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp">
+
+        </Spinner>
+    </LinearLayout>
 
     <com.rengwuxian.materialedittext.MaterialEditText
         android:id="@+id/nama_sparepart_txt"
