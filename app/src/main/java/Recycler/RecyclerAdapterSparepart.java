@@ -85,6 +85,9 @@ public class RecyclerAdapterSparepart extends RecyclerView.Adapter<RecyclerAdapt
                     if (item.getNama_sparepart().toLowerCase().contains(filterPattern)) {
                         filteredList.add(item);
                     }
+                    if(item.getKode_sparepart().toLowerCase().contains(filterPattern)) {
+                        filteredList.add(item);
+                    }
                 }
             }
 

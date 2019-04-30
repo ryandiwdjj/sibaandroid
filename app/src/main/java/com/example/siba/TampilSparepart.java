@@ -26,6 +26,7 @@ import java.io.IOException;
 
 import API.ApiClient;
 import API.ApiInterface;
+import Fragments.SupplierTampilFragment;
 import Models.sparepart;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -174,14 +175,17 @@ public class TampilSparepart extends AppCompatActivity {
             public void onClick(View v) {
                 {
 
-                    if (kode_sparepart.getText().toString().isEmpty() ||
-                            nama_sparepart.getText().toString().isEmpty() ||
+                    if (nama_sparepart.getText().toString().isEmpty() ||
                             merk_sparepart.getText().toString().isEmpty() ||
                             tipe_sparepart.getText().toString().isEmpty() ||
                             jumlah_stok_sparepart.getText().toString().isEmpty() ||
                             harga_beli_sparepart.getText().toString().isEmpty() ||
                             harga_jual_sparepart.getText().toString().isEmpty() ||
-                            jumlah_minimal.getText().toString().isEmpty()) {
+                            jumlah_minimal.getText().toString().isEmpty() ||
+                            Integer.parseInt(jumlah_minimal.getText().toString()) >
+                                    Integer.parseInt(jumlah_stok_sparepart.getText().toString()) ||
+                            Float.parseFloat(harga_beli_sparepart.getText().toString()) >
+                                    Float.parseFloat(harga_jual_sparepart.getText().toString()) ) {
                         Toast.makeText(TampilSparepart.this, "Kotak harus terisi!", Toast.LENGTH_SHORT).show();
                     } else {
                         progressDialog = new ProgressDialog(TampilSparepart.this);
@@ -197,8 +201,10 @@ public class TampilSparepart extends AppCompatActivity {
                                     , Integer.parseInt(jumlah_minimal.getText().toString()));
                         }
                         catch (Exception e) {
-                            Toast.makeText(TampilSparepart.this, "Gambar belum diubah", Toast.LENGTH_SHORT).show();
-                            progressDialog.dismiss();
+                            updateFileNonImg(spare.getId_sparepart(), kode_sparepart.getText().toString(), nama_sparepart.getText().toString()
+                                    , merk_sparepart.getText().toString(), tipe_sparepart.getText().toString(), Integer.parseInt(jumlah_stok_sparepart.getText().toString())
+                                    , Float.parseFloat(harga_beli_sparepart.getText().toString()), Float.parseFloat(harga_jual_sparepart.getText().toString())
+                                    , Integer.parseInt(jumlah_minimal.getText().toString()));
                         }
 
                     }
@@ -211,6 +217,10 @@ public class TampilSparepart extends AppCompatActivity {
         delete_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                progressDialog = new ProgressDialog(TampilSparepart.this);
+                progressDialog.setMessage("Saving...");
+                progressDialog.show();
+
                 //method delete
                 apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
                 Call<sparepart> call = apiInterface.deleteSparepart(spare.getId_sparepart());
@@ -219,17 +229,28 @@ public class TampilSparepart extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<sparepart> call, Response<sparepart> response) {
                         if(response.isSuccessful()) {
+                            progressDialog.dismiss();
                             Toast.makeText(TampilSparepart.this, "Sparepart Terhapus", Toast.LENGTH_SHORT).show();
-                            onBackPressed();
+
+                            if(!progressDialog.isShowing()) {
+                                Log.d("setOndismiss", "pressed");
+                                onBackPressed();
+                            }
+
                         }
                         else {
+                            progressDialog.dismiss();
                             Toast.makeText(TampilSparepart.this, "Cek Koneksi anda", Toast.LENGTH_SHORT).show();
                         }
                     }
                     @Override
                     public void onFailure(Call<sparepart> call, Throwable t) {
+                        progressDialog.dismiss();
                         Log.e("onFailure", t.getMessage());
-                        onBackPressed();
+                        if(!progressDialog.isShowing()) {
+                            Log.d("setOndismiss", "pressed");
+                            onBackPressed();
+                        }
                     }
                 });
             }
@@ -283,6 +304,55 @@ public class TampilSparepart extends AppCompatActivity {
         //creating a call and calling the upload image method
         Call<sparepart> call = apiInterface.updateSparepart(id_sparepart, kode_spare, nama_spare, merk_spare
                 ,tipe_spare, gambar, jumlah_stok, harga_beli_spare, harga_jual_spare, jumlah_min);
+
+
+        //finally performing the call
+        call.enqueue(new Callback<sparepart>() {
+            @Override
+            public void onResponse(Call<sparepart> call, Response<sparepart> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(getApplicationContext(), "Data Berhasil diupdate", Toast.LENGTH_LONG).show();
+                    progressDialog.dismiss();
+                    onBackPressed();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Cek koneksi anda", Toast.LENGTH_LONG).show();
+                    progressDialog.dismiss();
+                    try {
+                        Log.e("onresponse error", response.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<sparepart> call, Throwable t) {
+                progressDialog.dismiss();
+                Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private void updateFileNonImg(Integer id_sparepart, String kode_sparepart, String nama_sparepart,
+                            String merk_sparepart, String tipe_sparepart, Integer jumlah_stok_sparepart,
+                            Float harga_beli, Float harga_jual, Integer jumlah_minimal) {
+
+        //RequestBody id_spare = RequestBody.create(MediaType.parse("multipart/form-data"), id_sparepart.toString());
+        RequestBody kode_spare = RequestBody.create(MediaType.parse("string"), kode_sparepart);
+        RequestBody nama_spare = RequestBody.create(MediaType.parse("text/plain"), nama_sparepart);
+        RequestBody merk_spare = RequestBody.create(MediaType.parse("text/plain"), merk_sparepart);
+        RequestBody tipe_spare = RequestBody.create(MediaType.parse("text/plain"), tipe_sparepart);
+        RequestBody jumlah_stok = RequestBody.create(MediaType.parse("text/plain"), jumlah_stok_sparepart.toString());
+        RequestBody harga_beli_spare = RequestBody.create(MediaType.parse("text/plain"), harga_beli.toString());
+        RequestBody harga_jual_spare = RequestBody.create(MediaType.parse("text/plain"), harga_jual.toString());
+        RequestBody jumlah_min = RequestBody.create(MediaType.parse("text/plain"), jumlah_minimal.toString());
+
+        //creating our api
+        ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
+
+        //creating a call and calling the upload image method
+        Call<sparepart> call = apiInterface.updateSparepartNonImage(id_sparepart, kode_spare, nama_spare, merk_spare
+                ,tipe_spare, jumlah_stok, harga_beli_spare, harga_jual_spare, jumlah_min);
 
 
         //finally performing the call

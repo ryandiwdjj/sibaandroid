@@ -1,5 +1,6 @@
 package com.example.siba;
 
+import android.app.ProgressDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -31,6 +32,8 @@ public class TampilSupplier extends AppCompatActivity {
     private Button simpan_btn;
     private Button delete_btn;
     private Switch editable;
+
+    ProgressDialog progressDialog;
 
     private ApiInterface apiInterface;
 
@@ -100,6 +103,9 @@ public class TampilSupplier extends AppCompatActivity {
         simpan_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                final ProgressDialog progressDialog = new ProgressDialog(TampilSupplier.this);
+                progressDialog.setMessage("Saving...");
+                progressDialog.show();
                 //method simpan
                 apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
 
@@ -114,17 +120,23 @@ public class TampilSupplier extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<supplier> call, Response<supplier> response) {
                         if(response.isSuccessful()) {
+                            progressDialog.dismiss();
                             Toast.makeText(TampilSupplier.this, "Supplier Diperbaharui", Toast.LENGTH_SHORT).show();
-                            onBackPressed();
+
+                            if(!progressDialog.isShowing()) {
+                                Log.d("setOndismiss", "pressed");
+                                onBackPressed();
+                            }
                         }
                         else {
+                            progressDialog.dismiss();
                             Toast.makeText(TampilSupplier.this, "Cek Koneksi anda", Toast.LENGTH_SHORT).show();
                         }
                     }
                     @Override
                     public void onFailure(Call<supplier> call, Throwable t) {
+                        progressDialog.dismiss();
                         Log.e("onFailure", t.getMessage());
-                        onBackPressed();
                     }
                 });
             }
@@ -134,6 +146,10 @@ public class TampilSupplier extends AppCompatActivity {
         delete_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                progressDialog = new ProgressDialog(TampilSupplier.this);
+                progressDialog.setMessage("Saving...");
+                progressDialog.show();
+
                 //method delete
                 apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
                 Call<supplier> call = apiInterface.deleteSupplier(sup.getId_supplier());
@@ -142,17 +158,23 @@ public class TampilSupplier extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<supplier> call, Response<supplier> response) {
                         if(response.isSuccessful()) {
+                            progressDialog.dismiss();
                             Toast.makeText(TampilSupplier.this, "Supplier Terhapus", Toast.LENGTH_SHORT).show();
-                            onBackPressed();
+
+                            if(!progressDialog.isShowing()) {
+                                Log.d("setOndismiss", "pressed");
+                                onBackPressed();
+                            }
                         }
                         else {
+                            progressDialog.dismiss();
                             Toast.makeText(TampilSupplier.this, "Cek Koneksi anda", Toast.LENGTH_SHORT).show();
                         }
                     }
                     @Override
                     public void onFailure(Call<supplier> call, Throwable t) {
+                        progressDialog.dismiss();
                         Log.e("onFailure", t.getMessage());
-                        onBackPressed();
                     }
                 });
             }

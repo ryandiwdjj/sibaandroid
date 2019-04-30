@@ -42,7 +42,7 @@
         android:layout_gravity="center"
         android:layout_marginTop="10dp"
         android:checked="true"
-        android:text="Guest"
+        android:text="Pelanggan"
         />
 
     <EditText
@@ -62,6 +62,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:elevation="20dp"
         android:background="@drawable/ripple_effect"
         android:backgroundTint="@color/colorAccent"
         android:layout_marginTop="50dp"

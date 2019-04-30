@@ -66,22 +66,6 @@ public class SupplierTampilFragment extends Fragment {
                 recyclerAdapterSupplier.getFilter().filter(newText);
                 Log.d("onQueryTextChange","triggered");
 
-//                Call<List<supplier>> call = apiInterface.getSupplierByName(newText);
-//
-//                call.enqueue(new Callback<List<supplier>>() {
-//                    @Override
-//                    public void onResponse(Call<List<supplier>> call, Response<List<supplier>> response) {
-//                        recyclerAdapterSupplier.notifyDataSetChanged();
-//                        recyclerAdapterSupplier = new RecyclerAdapterSparepart(getContext(), response.body());
-//                        recyclerView.setAdapter(recyclerAdapterSupplier);
-//                    }
-//
-//                    @Override
-//                    public void onFailure(Call<List<supplier>> call, Throwable t) {
-//
-//                    }
-//                });
-
                 return false;
             }
         });

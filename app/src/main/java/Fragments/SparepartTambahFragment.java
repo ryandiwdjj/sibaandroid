@@ -147,10 +147,19 @@ public class SparepartTambahFragment extends Fragment {
                                     jumlah_stok_sparepart.getText().toString().isEmpty() ||
                                     harga_beli_sparepart.getText().toString().isEmpty() ||
                                     harga_jual_sparepart.getText().toString().isEmpty() ||
-                                    jumlah_minimal.getText().toString().isEmpty()) {
+                                    jumlah_minimal.getText().toString().isEmpty()){
                         Toast.makeText(getActivity(), "Data tidak boleh kosong!", Toast.LENGTH_SHORT).show();
 
-                    } else {
+                    }
+                    else if(Integer.parseInt(jumlah_minimal.getText().toString()) >
+                            Integer.parseInt(jumlah_stok_sparepart.getText().toString())) {
+                        Toast.makeText(getActivity(), "Jumlah Minimal tidak boleh lebih besar daripada jumlah stok!", Toast.LENGTH_SHORT).show();
+                    }
+                    else if(Float.parseFloat(harga_beli_sparepart.getText().toString()) >
+                            Float.parseFloat(harga_jual_sparepart.getText().toString()) ) {
+                        Toast.makeText(getActivity(),"Harga beli tidak boleh lebih besar daripada harga jual!", Toast.LENGTH_SHORT).show();
+                    }
+                    else {
                         progressDialog = new ProgressDialog(getContext());
                         progressDialog.setMessage("Menyimpan...");
                         progressDialog.show();

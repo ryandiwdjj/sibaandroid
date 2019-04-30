@@ -1,11 +1,9 @@
 package API;
 
-import android.graphics.Bitmap;
-import android.media.Image;
-
 import java.util.List;
 
 import Models.pegawai;
+import Models.pelanggan;
 import Models.sparepart;
 import Models.supplier;
 import okhttp3.MultipartBody;
@@ -24,44 +22,28 @@ import retrofit2.http.Path;
 
 public interface ApiInterface {
     ////////////////////////////////////////////////////////////////////////////////////////////////CRUD SUPPLIER
-    @GET("suppliersMobile") //200
+    @GET("mobile/supplier/") //200
     Call<List<supplier>> getSupplier();
 
-//    @GET("supplier/showByName/{nama_supplier}")
-//    Call<List<supplier>> getSupplierByName(@Path("nama_supplier") String name);
-
-    @POST("supplier/store") //204
+    @POST("mobile/supplier/store") //204
     @FormUrlEncoded
-    //Call<supplier> addSupplier(@Body supplier supplier);
     Call<supplier> addSupplier(@Field("nama_supplier")String nama_supplier,
                                    @Field("sales_supplier") String sales_supplier,
                                    @Field("no_telp_supplier") String no_telp_supplier,
                                    @Field("alamat_supplier") String alamat_supplier);
 
-    @PUT("supplier/update/{id}") //200
+    @PUT("mobile/supplier/update/{id}") //200
     Call<supplier> updateSupplier(@Path("id") int id, @Body supplier supplier);
 
     @DELETE("supplier/{id}") //204
     Call<supplier> deleteSupplier(@Path("id") int id);
 
     ////////////////////////////////////////////////////////////////////////////////////////////////CRUD SPAREPART
-    @GET("sparepartMobile")
+    @GET("mobile/sparepart/")
     Call<List<sparepart>> getSparepart();
 
-//    @POST("sparepart/store")
-//    @FormUrlEncoded
-//    Call<sparepart> addSparepart(@Field("kode_sparepart")String kode_sparepart,
-//                                 @Field("nama_sparepart") String nama_sparepart,
-//                                 @Field("merk_sparepart") String merk_sparepart,
-//                                 @Field("tipe_sparepart") String tipe_sparepart,
-//                                 @Field("gambar_sparepart") String gambar_sparepart,
-//                                 @Field("jumlah_stok_sparepart") Integer jumlah_stok_sparepart,
-//                                 @Field("harga_beli_sparepart") Float harga_beli_sparepart,
-//                                 @Field("harga_jual_sparepart") Float harga_jual_sparepart,
-//                                 @Field("jumlah_minimal") Integer jumlah_minimal);
-
     @Multipart
-    @POST("sparepart/storeMobile")
+    @POST("mobile/sparepart/store")
     Call<sparepart> addSparepart(      @Part("kode_sparepart") RequestBody kode_sparepart,
                                        @Part("nama_sparepart") RequestBody nama_sparepart,
                                        @Part("merk_sparepart") RequestBody merk_sparepart,
@@ -72,11 +54,8 @@ public interface ApiInterface {
                                        @Part("harga_jual_sparepart") RequestBody harga_jual_sparepart,
                                        @Part("jumlah_minimal") RequestBody jumlah_minimal);
 
-//    @PUT("sparepartMobile/update/{id}")
-//    Call<sparepart> updateSparepart(@Path("id") int id, @Body sparepart sparepart);
-
     @Multipart
-    @POST("sparepart/updateMobile/{id}")
+    @POST("mobile/sparepart/update/{id}")
     Call<sparepart> updateSparepart(@Path("id") Integer id,
                                     @Part("kode_sparepart") RequestBody kode_sparepart,
                                     @Part("nama_sparepart") RequestBody nama_sparepart,
@@ -88,14 +67,31 @@ public interface ApiInterface {
                                     @Part("harga_jual_sparepart") RequestBody harga_jual_sparepart,
                                     @Part("jumlah_minimal") RequestBody jumlah_minimal);
 
+    @Multipart
+    @POST("mobile/sparepart/update_nonimg/{id}")
+    Call<sparepart> updateSparepartNonImage (@Path("id") Integer id,
+                                    @Part("kode_sparepart") RequestBody kode_sparepart,
+                                    @Part("nama_sparepart") RequestBody nama_sparepart,
+                                    @Part("merk_sparepart") RequestBody merk_sparepart,
+                                    @Part("tipe_sparepart") RequestBody tipe_sparepart,
+                                    @Part("jumlah_stok_sparepart") RequestBody jumlah_stok_sparepart,
+                                    @Part("harga_beli_sparepart") RequestBody harga_beli_sparepart,
+                                    @Part("harga_jual_sparepart") RequestBody harga_jual_sparepart,
+                                    @Part("jumlah_minimal") RequestBody jumlah_minimal);
+
     @DELETE("sparepart/{id}")
     Call<sparepart> deleteSparepart(@Path("id") int id);
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////LOGIN
+    ////////////////////////////////////////////////////////////////////////////////////////////////CRUD PEGAWAI
 
-    @POST("login")
+    @POST("pegawai/login")
     @FormUrlEncoded
     Call<pegawai> login(@Field("no_telp_pegawai") String no_telp_pegawai
                         ,@Field("password_pegawai") String password_pegawai);
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////CRUD PELANGGAN
+
+    @POST("mobile/pelanggan/login")
+    @FormUrlEncoded
+    Call<pelanggan> login(@Field("no_telp_pelanggan") String no_telp_pelanggan);
 }

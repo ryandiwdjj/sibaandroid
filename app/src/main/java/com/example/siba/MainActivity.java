@@ -2,7 +2,9 @@ package com.example.siba;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -52,10 +54,37 @@ public class MainActivity extends AppCompatActivity
     private LinearLayout login_btn;
     private ImageView diag_image_view;
 
+    private String login_cred;
+    private String login_role;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        try {
+            SharedPreferences sp = getSharedPreferences("login", MODE_PRIVATE);
+            login_cred = sp.getString("login_cred", null);
+            login_role = sp.getString("login_role", null);
+
+            Log.d("sp login_cred", login_cred);
+            Log.d("sp login_role", login_role);
+        }
+        catch (Exception e) {
+            SharedPreferences sp = getSharedPreferences("login", MODE_PRIVATE);
+            SharedPreferences.Editor ed = sp.edit();
+            ed.putString("login_cred", "null");
+            ed.putString("login_role", "null");
+            ed.apply();
+
+            login_cred = sp.getString("login_cred", null);
+            login_role = sp.getString("login_role", null);
+
+
+            Log.d("sp login_cred", login_cred);
+            Log.d("sp login_role", login_role);
+        }
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -120,14 +149,14 @@ public class MainActivity extends AppCompatActivity
         }));
         getSparepart();
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-            }
-        });
+//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+////                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+////                        .setAction("Action", null).show();
+//            }
+//        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -152,6 +181,7 @@ public class MainActivity extends AppCompatActivity
                     spareList = response.body();
 
                     progressDialog.dismiss();
+
 
                     recyclerAdapterSparepartHargaJual.notifyDataSetChanged();
                     recyclerAdapterSparepartHargaJual = new RecyclerAdapterSparepartHargaJual(getApplicationContext(), response.body()); //getresult()

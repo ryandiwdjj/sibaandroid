@@ -10,61 +10,52 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.siba.R;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import Models.sparepart;
+import Models.penjualan;
 
-
-public class RecyclerAdapterSparepartHargaJual extends RecyclerView.Adapter<RecyclerAdapterSparepartHargaJual.MyViewHolder> implements RecyclerView.OnItemTouchListener {
+public class RecyclerAdapterPenjualan extends RecyclerView.Adapter<RecyclerAdapterPenjualan.MyViewHolder>
+        implements RecyclerView.OnItemTouchListener {
     private Context context;
-    private List<sparepart> sparepartList;
-    private List<sparepart> sparepartListFull;
+    private List<penjualan> penjualanList;
+    private List<penjualan> penjualanListFull;
     private ClickListener clicklistener;
     private GestureDetector gestureDetector;
 
-    public RecyclerAdapterSparepartHargaJual(Context context, List<sparepart> sparepartList) {
+    public RecyclerAdapterPenjualan(Context context, List<penjualan> penjualanList) {
         this.context = context;
-        this.sparepartList = sparepartList;
+        this.penjualanList = penjualanList;
     }
 
     @NonNull
     @Override
-    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View v = LayoutInflater.from(context).inflate(R.layout.recycler_view_sparepart_non_edit, viewGroup, false);
-        final MyViewHolder holder = new MyViewHolder(v);
+    public RecyclerAdapterPenjualan.MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+        View v = LayoutInflater.from(context).inflate(R.layout.recycler_view_penjualan, viewGroup, false);
+        final RecyclerAdapterPenjualan.MyViewHolder holder = new RecyclerAdapterPenjualan.MyViewHolder(v);
 
-        sparepartListFull = new ArrayList<>(sparepartList);
+        penjualanListFull = new ArrayList<>(penjualanList);
 
         return holder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerAdapterSparepartHargaJual.MyViewHolder myViewHolder, int i) {
-        sparepart spare = sparepartList.get(i);
-        myViewHolder.nama_sparepart.setText(spare.getNama_sparepart());
-        myViewHolder.harga_jual.setText("Rp. " + spare.getHarga_jual_sparepart().toString()); //get harga jual
-        Log.d("kode_sparepart",spare.getKode_sparepart());
-
-        Picasso.get().load(spare.getGambar_sparepart()).resize(200,200)
-                .centerCrop().placeholder(R.drawable.ic_atmaauto).into(myViewHolder.gambar_sparepart);
-        Log.d("gambar_sparepart", spare.getGambar_sparepart());
-        //set image
+    public void onBindViewHolder(@NonNull RecyclerAdapterPenjualan.MyViewHolder myViewHolder, int i) {
+//        supplier sup = supplierList.get(i);
+//        myViewHolder.nama_supplier.setText(sup.getNama_supplier());
+//        myViewHolder.sales_supplier.setText(sup.getSales_supplier());
     }
 
     @Override
     public int getItemCount() {
-        return sparepartList.size();
+        return penjualanList.size();
     }
 
-    public Filter getSearchFilter() {
+    public Filter getFilter() {
         return exampleFilter;
     }
 
@@ -72,19 +63,22 @@ public class RecyclerAdapterSparepartHargaJual extends RecyclerView.Adapter<Recy
 
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
-            List<sparepart> filteredList = new ArrayList<>();
+            List<penjualan> filteredList = new ArrayList<>();
 
             if (constraint == null || constraint.length() == 0) {
-                filteredList.addAll(sparepartListFull);
+                filteredList.addAll(penjualanListFull);
             }
             else {
                 Log.d("performFiltering","in");
                 String filterPattern = constraint.toString().toLowerCase().trim();
 
-                for (sparepart item : sparepartListFull) {
-                    if (item.getNama_sparepart().toLowerCase().contains(filterPattern)) {
-                        filteredList.add(item);
-                    }
+                for (penjualan item : penjualanListFull) {
+//                    if (item.getNama_supplier().toLowerCase().contains(filterPattern)) {
+//                        filteredList.add(item);
+//                    }
+//                    else if(item.getSales_supplier().toLowerCase().contains(filterPattern)) {
+//                        filteredList.add(item);
+//                    }
                 }
             }
 
@@ -96,14 +90,14 @@ public class RecyclerAdapterSparepartHargaJual extends RecyclerView.Adapter<Recy
 
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
-            sparepartList.clear();
-            sparepartList.addAll((List)results.values);
+            penjualanList.clear();
+            penjualanList.addAll((List)results.values);
             notifyDataSetChanged();
         }
     };
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////Click listener
-    public RecyclerAdapterSparepartHargaJual(Context context, final RecyclerView recycleView, final ClickListener clicklistener){
+    public RecyclerAdapterPenjualan(Context context, final RecyclerView recycleView, final ClickListener clicklistener){
 
         this.clicklistener=clicklistener;
         gestureDetector=new GestureDetector(context,new GestureDetector.SimpleOnGestureListener(){
@@ -143,15 +137,13 @@ public class RecyclerAdapterSparepartHargaJual extends RecyclerView.Adapter<Recy
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private TextView nama_sparepart;
-        private TextView harga_jual;
-        private ImageView gambar_sparepart;
+//        private TextView nama_supplier;
+//        private TextView sales_supplier;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            nama_sparepart = itemView.findViewById(R.id.sparepart_recycler_h1);
-            harga_jual = itemView.findViewById(R.id.sparepart_recycler_h2);
-            gambar_sparepart = itemView.findViewById(R.id.sparepart_recycler_img);
+//            nama_supplier = itemView.findViewById(R.id.supplier_recycler_h1);
+//            sales_supplier = itemView.findViewById(R.id.supplier_recycler_h2);
         }
         @Override
         public void onClick(View v) {
@@ -159,5 +151,3 @@ public class RecyclerAdapterSparepartHargaJual extends RecyclerView.Adapter<Recy
         }
     }
 }
-
-
