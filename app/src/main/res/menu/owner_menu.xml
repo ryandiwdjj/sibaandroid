@@ -2,19 +2,16 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.example.siba.OwnerActivity">
-
+    tools:context=".OwnerActivity">
     <item
         android:id="@+id/owner_menu"
-        app:showAsAction="ifRoom|withText"
-        android:title="Lainnya">
+        android:title="Lainnya"
+        app:showAsAction="ifRoom|withText">
         <menu>
             <item
-                android:id="@+id/owner_logout"
-                app:showAsAction="ifRoom|withText"
-                android:title="Logout">
-
-            </item>
+                android:id="@+id/logout_owner"
+                android:title="Log Out"
+                app:showAsAction="ifRoom|withText"></item>
         </menu>
     </item>
 </menu>

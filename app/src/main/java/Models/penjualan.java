@@ -2,6 +2,7 @@ package Models;
 
 
 import java.sql.Date;
+import java.sql.Timestamp;
 
 public class penjualan {
     private Integer id;
@@ -13,9 +14,19 @@ public class penjualan {
     private String status_transaksi;
     private String status_pembayaran;
     private String no_plat_kendaraan;
-    private Date tanggal_penjualan;
+    private String tanggal_penjualan;
 
-    public penjualan(Integer id, Integer id_pelanggan, Integer id_cabang, Float total_harga_trans, Float discount_penjualan, Float grand_total, String status_transaksi, String status_pembayaran, String no_plat_kendaraan, Date tanggal_penjualan) {
+    private String nama_pelanggan;
+    private String alamat_pelanggan;
+    private String no_telp_pelanggan;
+
+    private String nama_cabang;
+    private String alamat_cabang;
+    private String no_telp_cabang;
+
+    private String created_at;
+
+    public penjualan(Integer id, Integer id_pelanggan, Integer id_cabang, Float total_harga_trans, Float discount_penjualan, Float grand_total, String status_transaksi, String status_pembayaran, String no_plat_kendaraan, String tanggal_penjualan) {
         this.id = id;
         this.id_pelanggan = id_pelanggan;
         this.id_cabang = id_cabang;
@@ -26,6 +37,62 @@ public class penjualan {
         this.status_pembayaran = status_pembayaran;
         this.no_plat_kendaraan = no_plat_kendaraan;
         this.tanggal_penjualan = tanggal_penjualan;
+    }
+
+    public String getCreated_at() {
+        return created_at;
+    }
+
+    public void setCreated_at(String created_at) {
+        this.created_at = created_at;
+    }
+
+    public String getNama_pelanggan() {
+        return nama_pelanggan;
+    }
+
+    public void setNama_pelanggan(String nama_pelanggan) {
+        this.nama_pelanggan = nama_pelanggan;
+    }
+
+    public String getAlamat_pelanggan() {
+        return alamat_pelanggan;
+    }
+
+    public void setAlamat_pelanggan(String alamat_pelanggan) {
+        this.alamat_pelanggan = alamat_pelanggan;
+    }
+
+    public String getNo_telp_pelanggan() {
+        return no_telp_pelanggan;
+    }
+
+    public void setNo_telp_pelanggan(String no_telp_pelanggan) {
+        this.no_telp_pelanggan = no_telp_pelanggan;
+    }
+
+    public String getNama_cabang() {
+        return nama_cabang;
+    }
+
+    public void setNama_cabang(String nama_cabang) {
+        this.nama_cabang = nama_cabang;
+    }
+
+    public String getAlamat_cabang() {
+        return alamat_cabang;
+    }
+
+    public void setAlamat_cabang(String alamat_cabang) {
+        this.alamat_cabang = alamat_cabang;
+    }
+
+    public String getNo_telp_cabang() {
+        return no_telp_cabang;
+    }
+
+    public void setNo_telp_cabang(String no_telp_cabang) {
+        this.no_telp_cabang = no_telp_cabang;
     }
 
     public Integer getId() {
@@ -100,11 +167,11 @@ public class penjualan {
         this.no_plat_kendaraan = no_plat_kendaraan;
     }
 
-    public Date getTanggal_penjualan() {
+    public String getTanggal_penjualan() {
         return tanggal_penjualan;
     }
 
-    public void setTanggal_penjualan(Date tanggal_penjualan) {
+    public void setTanggal_penjualan(String tanggal_penjualan) {
         this.tanggal_penjualan = tanggal_penjualan;
     }
 }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import Models.pegawai;
 import Models.pelanggan;
+import Models.penjualan;
 import Models.sparepart;
 import Models.supplier;
 import okhttp3.MultipartBody;
@@ -82,6 +83,9 @@ public interface ApiInterface {
     @DELETE("sparepart/{id}")
     Call<sparepart> deleteSparepart(@Path("id") int id);
 
+    @GET("mobile/sparepart/cek_stok")
+    Call<List<sparepart>> cekStokSparepart();
+
     ////////////////////////////////////////////////////////////////////////////////////////////////CRUD PEGAWAI
 
     @POST("pegawai/login")
@@ -94,4 +98,9 @@ public interface ApiInterface {
     @POST("mobile/pelanggan/login")
     @FormUrlEncoded
     Call<pelanggan> login(@Field("no_telp_pelanggan") String no_telp_pelanggan);
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////TRANSACTION
+
+    @GET("mobile/trans_penjualan/")
+    Call<List<penjualan>> getPenjualan();
 }

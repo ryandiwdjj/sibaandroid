@@ -1,12 +1,12 @@
 package com.example.siba;
 
+import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -27,19 +27,24 @@ import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import API.ApiClient;
 import API.ApiInterface;
+//import BroadcastReceiver.SparepartCheck;
 import Models.sparepart;
 import Recycler.ClickListener;
 import Recycler.RecyclerAdapterSparepartHargaJual;
+//import androidx.work.Constraints;
+//import androidx.work.OneTimeWorkRequest;
+//import androidx.work.PeriodicWorkRequest;
+//import androidx.work.WorkManager;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -54,6 +59,9 @@ public class MainActivity extends AppCompatActivity
     private LinearLayout login_btn;
     private ImageView diag_image_view;
 
+    private PendingIntent pendingIntent;
+    private AlarmManager manager;
+
     private String login_cred;
     private String login_role;
 
@@ -61,6 +69,15 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+//        //retrieve a PendingIntent that will perform a broadcast
+//        Intent i = new Intent(this, SparepartCheck.class);
+//        pendingIntent = PendingIntent.getBroadcast(this, 0, i, 0);
+//
+//        manager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+//        int interval = 3000;
+//
+//        manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), interval, pendingIntent);
 
         try {
             SharedPreferences sp = getSharedPreferences("login", MODE_PRIVATE);

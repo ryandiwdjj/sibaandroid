@@ -14,25 +14,34 @@
             android:orientation="vertical"
             android:padding="25dp">
             <TextView
-                android:id="@+id/penjualan_recycler_h1"
+                android:id="@+id/penjualan_recycler_pelanggan"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Id Pelanggan -> nama"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
                 />
-            <!--<TextView-->
-                <!--android:id="@+id/penjualan_recycler_h2"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:text="Id cabang -> nama"-->
-                <!--android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"/>-->
+            <TextView
+                android:id="@+id/penjualan_recycler_cabang"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Id cabang -> nama"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"/>
 
-            <!--<TextView-->
-                <!--android:id="@+id/penjualan_recycler_h2"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:text="Id cabang -> nama"-->
-                <!--android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"/>-->
+            <TextView
+                android:id="@+id/penjualan_recycler_total_harga"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:text="Rp. Total harga trans"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"/>
+
+            <TextView
+                android:id="@+id/penjualan_recycler_created"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:text="created_at"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption"/>
 
         </LinearLayout>
     </android.support.v7.widget.CardView>

@@ -1,5 +1,6 @@
 package com.example.siba;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.design.widget.Snackbar;
@@ -9,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,6 +30,11 @@ public class LoginActivity extends AppCompatActivity {
     Button login_btn;
     String login_cred;
     String login_role;
+
+    public void testingOwner() {
+        phone_txt.setText("1");
+        password_txt.setText("test");
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +57,7 @@ public class LoginActivity extends AppCompatActivity {
         guest_switch = findViewById(R.id.guestSwitch);
         login_btn = findViewById(R.id.loginBtn);
 
-        Toolbar myToolBar = findViewById(R.id.owner_toolbar);
+        Toolbar myToolBar = findViewById(R.id.login_toolbar);
         myToolBar.setTitle("Login");
         myToolBar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
         setSupportActionBar(myToolBar);
@@ -68,6 +75,8 @@ public class LoginActivity extends AppCompatActivity {
                     //password_txt.setEnabled(true);
                     password_txt.setText("");
                     password_txt.setVisibility(View.VISIBLE);
+
+                    testingOwner();
                     //Toast.makeText(LoginActivity.this, "isNotChecked", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -77,9 +86,13 @@ public class LoginActivity extends AppCompatActivity {
         login_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+//                ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this);
+//                progressDialog.setMessage("Loading...");
+//                progressDialog.show();
                 //login process
                 if (guest_switch.isChecked()) { //masuk ke bagian pelanggan
                     if (phone_txt.getText().toString().isEmpty()) {
+//                        progressDialog.dismiss();
                         Toast.makeText(getApplicationContext(), "Nomor handphone harus terisi!", Toast.LENGTH_LONG).show();
                     }
                     else {

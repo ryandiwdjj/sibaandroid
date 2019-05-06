@@ -45,9 +45,11 @@ public class RecyclerAdapterPenjualan extends RecyclerView.Adapter<RecyclerAdapt
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerAdapterPenjualan.MyViewHolder myViewHolder, int i) {
-//        supplier sup = supplierList.get(i);
-//        myViewHolder.nama_supplier.setText(sup.getNama_supplier());
-//        myViewHolder.sales_supplier.setText(sup.getSales_supplier());
+        penjualan penjualan = penjualanList.get(i);
+        myViewHolder.nama_pelanggan.setText(penjualan.getNama_pelanggan());
+        myViewHolder.nama_cabang.setText(penjualan.getNama_cabang());
+        myViewHolder.total_belanja.setText(penjualan.getGrand_total().toString());
+        myViewHolder.created_at.setText(penjualan.getCreated_at());
     }
 
     @Override
@@ -137,13 +139,19 @@ public class RecyclerAdapterPenjualan extends RecyclerView.Adapter<RecyclerAdapt
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-//        private TextView nama_supplier;
-//        private TextView sales_supplier;
+        private TextView nama_pelanggan;
+        private TextView nama_cabang;
+        private TextView total_belanja;
+        private TextView created_at;
+
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-//            nama_supplier = itemView.findViewById(R.id.supplier_recycler_h1);
-//            sales_supplier = itemView.findViewById(R.id.supplier_recycler_h2);
+            nama_pelanggan = itemView.findViewById(R.id.penjualan_recycler_pelanggan);
+            nama_cabang = itemView.findViewById(R.id.penjualan_recycler_cabang);
+            total_belanja = itemView.findViewById(R.id.penjualan_recycler_total_harga);
+            created_at = itemView.findViewById(R.id.penjualan_recycler_created);
+
         }
         @Override
         public void onClick(View v) {

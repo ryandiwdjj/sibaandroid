@@ -5,7 +5,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiClient {
 
-    private static final String BASE_URL = "http://10.53.12.50:8000/api/"; //host laptop saat konek ke wifi
+    private static final String BASE_URL = "http://192.168.1.6:8000/api/"; //host laptop saat konek ke wifi
     private static Retrofit retrofit;
 
     public static Retrofit getApiClient(){

@@ -9,7 +9,7 @@
     tools:context=".LoginActivity">
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/owner_toolbar"
+        android:id="@+id/login_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:elevation="4dp" />
@@ -41,7 +41,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="10dp"
-        android:checked="true"
+        android:checked="false"
         android:text="Pelanggan"
         />
 

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.siba.PenjualanActivity">
+    <item
+        android:id="@+id/sparepart_menu"
+        app:showAsAction="ifRoom|withText"
+        android:title="Lainnya"
+        >
+        <menu>
+            <item
+                android:id="@+id/tambah_penjualan_tb"
+                app:showAsAction="ifRoom|withText"
+                android:title="Tambah">
+            </item>
+            <item
+                android:id="@+id/tampil_penjualan_tb"
+                app:showAsAction="ifRoom|withText"
+                android:title="Tampil">
+            </item>
+        </menu>
+    </item>
+</menu>
