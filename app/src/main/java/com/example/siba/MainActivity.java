@@ -4,6 +4,7 @@ import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -41,6 +42,7 @@ import Recycler.RecyclerAdapterSparepartHargaJual;
 //import androidx.work.OneTimeWorkRequest;
 //import androidx.work.PeriodicWorkRequest;
 //import androidx.work.WorkManager;
+import Service.SparepartCheck;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -70,14 +72,14 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        //retrieve a PendingIntent that will perform a broadcast
-//        Intent i = new Intent(this, SparepartCheck.class);
-//        pendingIntent = PendingIntent.getBroadcast(this, 0, i, 0);
-//
-//        manager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
-//        int interval = 3000;
-//
-//        manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), interval, pendingIntent);
+        //retrieve a PendingIntent that will perform a broadcast
+        Intent i = new Intent(this, SparepartCheck.class);
+        pendingIntent = PendingIntent.getBroadcast(this, 0, i, 0);
+
+        manager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+        int interval = 3000;
+
+        manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), interval, pendingIntent);
 
         try {
             SharedPreferences sp = getSharedPreferences("login", MODE_PRIVATE);

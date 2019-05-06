@@ -51,11 +51,9 @@ public class RecyclerAdapterSparepartHargaJual extends RecyclerView.Adapter<Recy
         sparepart spare = sparepartList.get(i);
         myViewHolder.nama_sparepart.setText(spare.getNama_sparepart());
         myViewHolder.harga_jual.setText("Rp. " + spare.getHarga_jual_sparepart().toString()); //get harga jual
-        Log.d("kode_sparepart",spare.getKode_sparepart());
 
         Picasso.get().load(spare.getGambar_sparepart()).resize(200,200)
                 .centerCrop().placeholder(R.drawable.ic_atmaauto).into(myViewHolder.gambar_sparepart);
-        Log.d("gambar_sparepart", spare.getGambar_sparepart());
         //set image
     }
 
