@@ -18,9 +18,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <!--<receiver android:name="BroadcastReceiver.SparepartCheck"></receiver>-->
-        <activity android:name=".PenjualanActivity"></activity>
-        <activity android:name=".OwnerPengadaanActivity" />
+        <activity android:name=".PengadaanActivity"></activity>
+        <!-- <receiver android:name="BroadcastReceiver.SparepartCheck"></receiver> -->
+        <activity android:name=".PenjualanActivity" />
         <activity android:name=".CsActivity" />
         <activity
             android:name=".TampilSparepart"

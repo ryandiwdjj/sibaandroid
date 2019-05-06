@@ -4,6 +4,7 @@ import java.util.List;
 
 import Models.pegawai;
 import Models.pelanggan;
+import Models.pengadaan;
 import Models.penjualan;
 import Models.sparepart;
 import Models.supplier;
@@ -103,4 +104,9 @@ public interface ApiInterface {
 
     @GET("mobile/trans_penjualan/")
     Call<List<penjualan>> getPenjualan();
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////PENGADAAN
+
+    @GET("mobile/trans_pengadaan/")
+    Call<List<pengadaan>> getPengadaan();
 }

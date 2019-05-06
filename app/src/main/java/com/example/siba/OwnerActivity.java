@@ -59,7 +59,7 @@ public class OwnerActivity extends AppCompatActivity {
         pengadaan_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent sparepart_i = new Intent(OwnerActivity.this, OwnerPengadaanActivity.class);
+                Intent sparepart_i = new Intent(OwnerActivity.this, PengadaanActivity.class);
                 startActivity(sparepart_i);
             }
         });
