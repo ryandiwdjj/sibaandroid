@@ -29,7 +29,10 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import API.ApiClient;
@@ -71,6 +74,12 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Date c = Calendar.getInstance().getTime();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-mm-dd");
+        String formattedDate = df.format(c);
+
+        Log.d("date now", formattedDate);
 
         //retrieve a PendingIntent that will perform a broadcast
         Intent i = new Intent(this, SparepartCheck.class);

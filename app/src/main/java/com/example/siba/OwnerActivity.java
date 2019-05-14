@@ -77,7 +77,8 @@ public class OwnerActivity extends AppCompatActivity {
         laporan_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(OwnerActivity.this, "Laporan pressed", Toast.LENGTH_SHORT).show();
+                Intent laporan_i = new Intent(OwnerActivity.this, OwnerReportActivity.class);
+                startActivity(laporan_i);
             }
         });
     }

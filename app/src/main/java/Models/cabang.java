@@ -1,9 +1,15 @@
 package Models;
 
+import com.google.gson.annotations.SerializedName;
+
 public class cabang {
+    @SerializedName("id")
     Integer id_cabang;
+    @SerializedName("nama_cabang")
     String nama_cabang;
+    @SerializedName("alamat_cabang")
     String alamat_cabang;
+    @SerializedName("no_telp_cabang")
     String no_telp_cabang;
 
     public cabang(Integer id_cabang, String nama_cabang, String alamat_cabang, String no_telp_cabang) {

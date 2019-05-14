@@ -80,8 +80,8 @@ public class SparepartCheck extends BroadcastReceiver {
             notification_builder = new NotificationCompat.Builder(context);
         }
         notification_builder.setSmallIcon(R.drawable.ic_atmaauto)
-                .setContentTitle("Sparepart kurang cuuyy")
-                .setContentText("MAKANYA CEK SPAREPART TERUS")
+                .setContentTitle("Sparepart sudah menipizzz")
+                .setContentText("Ketuk di sini untuk memesan")
                 .setAutoCancel(true)
                 .setContentIntent(pending_intent);
 

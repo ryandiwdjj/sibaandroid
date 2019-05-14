@@ -2,6 +2,8 @@ package API;
 
 import java.util.List;
 
+import Models.cabang;
+import Models.detail_pengadaan;
 import Models.pegawai;
 import Models.pelanggan;
 import Models.pengadaan;
@@ -39,6 +41,11 @@ public interface ApiInterface {
 
     @DELETE("supplier/{id}") //204
     Call<supplier> deleteSupplier(@Path("id") int id);
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////CRUD CABANG
+    @GET("cabang/all") //200
+    Call<List<cabang>> getCabang();
+
 
     ////////////////////////////////////////////////////////////////////////////////////////////////CRUD SPAREPART
     @GET("mobile/sparepart/")
@@ -109,4 +116,18 @@ public interface ApiInterface {
 
     @GET("mobile/trans_pengadaan/")
     Call<List<pengadaan>> getPengadaan();
+
+    @FormUrlEncoded
+    @POST("mobile/trans_pengadaan/store")
+    Call<pengadaan> addPengadaan (
+            @Field("id_supplier") Integer id_supplier
+            , @Field("id_cabang") Integer id_cabang
+            , @Field("tanggal_pengadaan") String tanggal_pengadaan);
+
+    @FormUrlEncoded
+    @POST("mobile/trans_pengadaan/detail/store")
+    Call<detail_pengadaan> addDetailPengadaan (
+            @Field("id_trans_pengadaan") Integer id_trans_pengadaan,
+            @Field("id_sparepart") Integer id_sparepart
+            , @Field("jumlah_pengadaan") Integer jumlah_pengadaan);
 }

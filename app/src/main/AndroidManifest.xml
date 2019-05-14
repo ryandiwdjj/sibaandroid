@@ -18,8 +18,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".PengadaanActivity"></activity>
-        <!-- <receiver android:name="BroadcastReceiver.SparepartCheck"></receiver> -->
+        <activity android:name=".TampilPengadaan"></activity>
+        <activity android:name=".OwnerReportActivity" />
+        <activity android:name=".PengadaanActivity" /> <!-- <receiver android:name="BroadcastReceiver.SparepartCheck"></receiver> -->
         <activity android:name=".PenjualanActivity" />
         <activity android:name=".CsActivity" />
         <activity
@@ -52,7 +53,6 @@
             android:name="Service.SparepartCheck"
             android:enabled="true"
             android:exported="true" />
-
     </application>
 
 </manifest>

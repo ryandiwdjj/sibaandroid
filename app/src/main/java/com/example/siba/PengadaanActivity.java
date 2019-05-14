@@ -7,6 +7,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import Fragments.PengadaanTambahFragment;
 import Fragments.PengadaanTampilFragment;
 
 public class PengadaanActivity extends AppCompatActivity {
@@ -41,7 +42,7 @@ public class PengadaanActivity extends AppCompatActivity {
                 break;
             case R.id.tambah_pengadaan_tb:
                 myToolBar.setTitle("Tambah Pengadaan");
-//                fragmentManager.beginTransaction().replace(R.id.frame_supplier, new SupplierTambahFragment()).commit();
+                fragmentManager.beginTransaction().replace(R.id.frame_pengadaan, new PengadaanTambahFragment()).commit();
 //                Toast.makeText(this, "Tambah success", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.tampil_pengadaan_tb:

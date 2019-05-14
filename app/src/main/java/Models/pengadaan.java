@@ -1,10 +1,19 @@
 package Models;
 
+import com.google.gson.annotations.SerializedName;
+
 public class pengadaan {
+    @SerializedName("id")
+    Integer id_pengadaan;
+    @SerializedName("id_supplier")
     Integer id_supplier;
+    @SerializedName("id_cabang")
     Integer id_cabang;
+    @SerializedName("tanggal_pengadaan")
     String tanggal_pengadaan;
+    @SerializedName("total_harga_pengadaan")
     String total_harga_pengadaan;
+    @SerializedName("created_at")
     String created_at;
 
     String nama_supplier;
@@ -69,6 +78,14 @@ public class pengadaan {
 
     public void setAlamat_cabang(String alamat_cabang) {
         this.alamat_cabang = alamat_cabang;
+    }
+
+    public Integer getId_pengadaan() {
+        return id_pengadaan;
+    }
+
+    public void setId_pengadaan(Integer id_pengadaan) {
+        this.id_pengadaan = id_pengadaan;
     }
 
     public Integer getId_supplier() {

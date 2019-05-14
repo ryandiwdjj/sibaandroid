@@ -86,17 +86,17 @@ public class LoginActivity extends AppCompatActivity {
         login_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this);
-//                progressDialog.setMessage("Loading...");
-//                progressDialog.show();
+                final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this);
+                progressDialog.setMessage("Loading...");
                 //login process
                 if (guest_switch.isChecked()) { //masuk ke bagian pelanggan
                     if (phone_txt.getText().toString().isEmpty()) {
-//                        progressDialog.dismiss();
                         Toast.makeText(getApplicationContext(), "Nomor handphone harus terisi!", Toast.LENGTH_LONG).show();
                     }
                     else {
                         //login pelanggan function
+                        progressDialog.show();
+                        progressDialog.dismiss();
                     }
                 }
                 else { //bagian pegawai
@@ -105,6 +105,7 @@ public class LoginActivity extends AppCompatActivity {
                         Toast.makeText(LoginActivity.this, "Field harus terisi semua", Toast.LENGTH_SHORT).show();
                     }
                     else {
+                        progressDialog.show();
                         ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
                         Call<pegawai> call = apiInterface.login(phone_txt.getText().toString(),
                                 password_txt.getText().toString());
@@ -113,6 +114,7 @@ public class LoginActivity extends AppCompatActivity {
                             @Override
                             public void onResponse(Call<pegawai> call, Response<pegawai> response) {
                                 if (response.isSuccessful()) {
+
                                     //save login credential
                                     SharedPreferences sp = getSharedPreferences("login", MODE_PRIVATE);
                                     SharedPreferences.Editor ed = sp.edit();
@@ -125,24 +127,31 @@ public class LoginActivity extends AppCompatActivity {
 
                                     if (response.body().getId_role() == 1) { // 1 == owner
                                         Log.d("login isSuccessfull", login_cred);
+                                        progressDialog.dismiss();
                                         //intent to another activity
                                         Intent i = new Intent(LoginActivity.this, OwnerActivity.class);
                                         startActivity(i);
                                     } else if (response.body().getId_role() == 2 || //2 customer service, 3 kasir, 4 montir
                                             response.body().getId_role() == 3 ||
                                             response.body().getId_role() == 4) {
+                                        progressDialog.dismiss();
                                         //intent menu pembayaran tok
+                                        Intent i = new Intent(LoginActivity.this, PenjualanActivity.class);
+                                        startActivity(i);
                                         Toast.makeText(LoginActivity.this, "Pegawai", Toast.LENGTH_SHORT).show();
                                     } else {
+                                        progressDialog.dismiss();
                                         Toast.makeText(LoginActivity.this, "Role tidak ada", Toast.LENGTH_SHORT).show();
                                     }
                                 } else {
                                     Log.e("onResponse", response.message());
+                                    progressDialog.dismiss();
                                 }
                             }
 
                             @Override
                             public void onFailure(Call<pegawai> call, Throwable t) {
+                                progressDialog.dismiss();
                                 Log.e("onFailure", t.getMessage());
                             }
                         });
