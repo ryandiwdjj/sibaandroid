@@ -13,7 +13,7 @@
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     <LinearLayout
-        android:id="@+id/login_btn"
+        android:id="@+id/profile_btn"
         android:clickable="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -21,20 +21,21 @@
 
         <ImageView
             android:id="@+id/imageView"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:contentDescription="@string/nav_header_desc"
             android:paddingTop="@dimen/nav_header_vertical_spacing"
-            app:srcCompat="@drawable/ic_user_white" />
+            app:srcCompat="@drawable/ic_atmaauto" />
 
         <TextView
+            android:id="@+id/login_role"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/nav_header_vertical_spacing"
-            android:text="Belum Login"
+            android:text="Atma Auto"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textColor="@color/white"
-            android:textSize="15dp" />
+            android:textSize="20dp" />
     </LinearLayout>
 
 </LinearLayout>

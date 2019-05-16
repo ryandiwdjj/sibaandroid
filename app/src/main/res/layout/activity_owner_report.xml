@@ -1,19 +1,225 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/grey"
     android:orientation="vertical"
-    android:gravity="center"
     tools:context=".OwnerReportActivity">
-
-    <WebView
-        android:id="@+id/report_view"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    </WebView>
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/report_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:titleTextColor="@color/white"
+        android:elevation="4dp" />
 
-</LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/pendapatan_btn"
+                android:layout_width="match_parent"
+                android:layout_height="75dp"
+                android:layout_marginHorizontal="20dp"
+                android:background="@drawable/ripple_effect"
+                android:backgroundTint="@color/white"
+                android:clickable="true"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <!--<ImageView-->
+                <!--android:layout_width="50dp"-->
+                <!--android:layout_height="50dp"-->
+                <!--android:padding="5dp"-->
+                <!--android:src="@drawable/ic_report" />-->
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Pendapatan Bulanan"
+                    android:textSize="20dp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/pengeluaran_btn"
+                android:layout_width="match_parent"
+                android:layout_height="75dp"
+                android:layout_marginHorizontal="20dp"
+                android:background="@drawable/ripple_effect"
+                android:backgroundTint="@color/white"
+                android:clickable="true"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <!--<ImageView-->
+                <!--android:layout_width="50dp"-->
+                <!--android:layout_height="50dp"-->
+                <!--android:padding="5dp"-->
+                <!--android:src="@drawable/ic_supplier" />-->
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Pengeluaran Bulanan"
+                    android:textSize="20dp" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/sparepart_terlaris_btn"
+                android:layout_width="match_parent"
+                android:layout_height="75dp"
+                android:layout_marginHorizontal="20dp"
+                android:background="@drawable/ripple_effect"
+                android:backgroundTint="@color/white"
+                android:clickable="true"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <!--<ImageView-->
+                <!--android:layout_width="50dp"-->
+                <!--android:layout_height="50dp"-->
+                <!--android:padding="5dp"-->
+                <!--android:src="@drawable/ic_supplier" />-->
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sparepart Terlaris"
+                    android:textSize="20dp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/jumlah_jasa_service_btn"
+                android:layout_width="match_parent"
+                android:layout_height="75dp"
+                android:layout_marginHorizontal="20dp"
+                android:background="@drawable/ripple_effect"
+                android:backgroundTint="@color/white"
+                android:clickable="true"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <!--<ImageView-->
+                <!--android:layout_width="50dp"-->
+                <!--android:layout_height="50dp"-->
+                <!--android:padding="5dp"-->
+                <!--android:src="@drawable/ic_supplier" />-->
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Jasa Service Permotor"
+                    android:textSize="20dp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/sisa_stok_btn"
+                android:layout_width="match_parent"
+                android:layout_height="75dp"
+                android:layout_marginHorizontal="20dp"
+                android:background="@drawable/ripple_effect"
+                android:backgroundTint="@color/white"
+                android:clickable="true"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <!--<ImageView-->
+                <!--android:layout_width="50dp"-->
+                <!--android:layout_height="50dp"-->
+                <!--android:padding="5dp"-->
+                <!--android:src="@drawable/ic_supplier" />-->
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sisa Stok Perbulan"
+                    android:textSize="20dp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/pendapatan_tahunan_btn"
+                android:layout_width="match_parent"
+                android:layout_height="75dp"
+                android:layout_marginHorizontal="20dp"
+                android:background="@drawable/ripple_effect"
+                android:backgroundTint="@color/white"
+                android:clickable="true"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <!--<ImageView-->
+                <!--android:layout_width="50dp"-->
+                <!--android:layout_height="50dp"-->
+                <!--android:padding="5dp"-->
+                <!--android:src="@drawable/ic_supplier" />-->
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Pendapatan Tahunan"
+                    android:textSize="20dp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

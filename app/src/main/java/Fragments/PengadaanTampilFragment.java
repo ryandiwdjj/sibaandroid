@@ -1,6 +1,7 @@
 package Fragments;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -15,6 +16,8 @@ import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.example.siba.R;
+import com.example.siba.TampilPengadaan;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -80,9 +83,9 @@ public class PengadaanTampilFragment extends Fragment {
                 pengadaan = pengadaanList.get(position);
 
                 //mindah data sup pake json
-//                Intent intent = new Intent(getContext(), TampilSupplier.class);
-//                intent.putExtra("supplier_object", new Gson().toJson(sup));
-//                startActivity(intent);
+                Intent intent = new Intent(getContext(), TampilPengadaan.class);
+                intent.putExtra("pengadaan_object", new Gson().toJson(pengadaan));
+                startActivity(intent);
             }
 
             @Override

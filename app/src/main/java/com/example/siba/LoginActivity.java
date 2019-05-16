@@ -89,7 +89,9 @@ public class LoginActivity extends AppCompatActivity {
                 final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this);
                 progressDialog.setMessage("Loading...");
                 //login process
-                if (guest_switch.isChecked()) { //masuk ke bagian pelanggan
+                if (guest_switch.isChecked()) {
+                    //masuk ke bagian pelanggan
+
                     if (phone_txt.getText().toString().isEmpty()) {
                         Toast.makeText(getApplicationContext(), "Nomor handphone harus terisi!", Toast.LENGTH_LONG).show();
                     }
@@ -131,6 +133,7 @@ public class LoginActivity extends AppCompatActivity {
                                         //intent to another activity
                                         Intent i = new Intent(LoginActivity.this, OwnerActivity.class);
                                         startActivity(i);
+                                        finish();
                                     } else if (response.body().getId_role() == 2 || //2 customer service, 3 kasir, 4 montir
                                             response.body().getId_role() == 3 ||
                                             response.body().getId_role() == 4) {
@@ -138,6 +141,7 @@ public class LoginActivity extends AppCompatActivity {
                                         //intent menu pembayaran tok
                                         Intent i = new Intent(LoginActivity.this, PenjualanActivity.class);
                                         startActivity(i);
+                                        finish();
                                         Toast.makeText(LoginActivity.this, "Pegawai", Toast.LENGTH_SHORT).show();
                                     } else {
                                         progressDialog.dismiss();

@@ -18,11 +18,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".TampilPengadaan"></activity>
+        <activity android:name=".OwnerReportTampilActivity"></activity>
+        <activity
+            android:name=".TampilPengadaan"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity android:name=".OwnerReportActivity" />
         <activity android:name=".PengadaanActivity" /> <!-- <receiver android:name="BroadcastReceiver.SparepartCheck"></receiver> -->
         <activity android:name=".PenjualanActivity" />
-        <activity android:name=".CsActivity" />
         <activity
             android:name=".TampilSparepart"
             android:theme="@style/AppTheme.NoActionBar"
@@ -33,7 +35,8 @@
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity
             android:name=".TampilSupplier"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity android:name=".OwnerSparepartActivity" />
         <activity android:name=".OwnerSupplierActivity" />
         <activity android:name=".OwnerActivity" />

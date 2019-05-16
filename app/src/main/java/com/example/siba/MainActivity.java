@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -25,6 +26,7 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -61,14 +63,14 @@ public class MainActivity extends AppCompatActivity
     private RecyclerView.LayoutManager layoutManager;
     ApiInterface apiInterface;
     private sparepart spare;
-    private LinearLayout login_btn;
-    private ImageView diag_image_view;
 
-    private PendingIntent pendingIntent;
-    private AlarmManager manager;
+    private SharedPreferences sp;
 
     private String login_cred;
     private String login_role;
+
+    private View view;
+    private TextView roles;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,42 +78,16 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
         Date c = Calendar.getInstance().getTime();
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-mm-dd");
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         String formattedDate = df.format(c);
 
         Log.d("date now", formattedDate);
 
-        //retrieve a PendingIntent that will perform a broadcast
-        Intent i = new Intent(this, SparepartCheck.class);
-        pendingIntent = PendingIntent.getBroadcast(this, 0, i, 0);
-
-        manager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
-        int interval = 3000;
-
-        manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), interval, pendingIntent);
-
-        try {
-            SharedPreferences sp = getSharedPreferences("login", MODE_PRIVATE);
-            login_cred = sp.getString("login_cred", null);
-            login_role = sp.getString("login_role", null);
-
-            Log.d("sp login_cred", login_cred);
-            Log.d("sp login_role", login_role);
-        }
-        catch (Exception e) {
-            SharedPreferences sp = getSharedPreferences("login", MODE_PRIVATE);
-            SharedPreferences.Editor ed = sp.edit();
-            ed.putString("login_cred", "null");
-            ed.putString("login_role", "null");
-            ed.apply();
-
-            login_cred = sp.getString("login_cred", null);
-            login_role = sp.getString("login_role", null);
 
 
-            Log.d("sp login_cred", login_cred);
-            Log.d("sp login_role", login_role);
-        }
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+
+        loginCheck();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -119,9 +95,6 @@ public class MainActivity extends AppCompatActivity
         apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
 
         SearchView search_txt = findViewById(R.id.search_box_txt);
-        login_btn = findViewById(R.id.login_btn);
-        diag_image_view = findViewById(R.id.dialog_image_view);
-
 
 
         search_txt.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -136,7 +109,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public boolean onQueryTextChange(String newText) {
                 recyclerAdapterSparepartHargaJual.getSearchFilter().filter(newText);
-                Log.d("onQueryTextChange","triggered");
+                Log.d("onQueryTextChange", "triggered");
 
                 return false;
             }
@@ -177,14 +150,6 @@ public class MainActivity extends AppCompatActivity
         }));
         getSparepart();
 
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-////                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-////                        .setAction("Action", null).show();
-//            }
-//        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -192,8 +157,88 @@ public class MainActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+
         navigationView.setNavigationItemSelectedListener(this);
+
+        View view = navigationView.getHeaderView(0);
+        LinearLayout profile = view.findViewById(R.id.profile_btn);
+        profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharedPreferences sp = getSharedPreferences("login", MODE_PRIVATE);
+                login_cred = sp.getString("login_cred", null);
+                login_role = sp.getString("login_role", null);
+
+                Log.d("login_cred", login_cred);
+                Log.d("login_role", login_role);
+
+                if (login_cred.equals("null") && login_role.equals("null")) {
+                    DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                    drawer.closeDrawers();
+                    Toast.makeText(MainActivity.this, "Anda Belum Login!", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    if (login_role.equals("1")) { // 1 == owner
+                        //intent to another activity
+                        Intent i = new Intent(MainActivity.this, OwnerActivity.class);
+                        startActivity(i);
+                    }
+                    else if (login_role.equals("2") || //2 customer service, 3 kasir, 4 montir
+                            login_role.equals("3") ||
+                            login_role.equals("4")) {
+                        //intent menu pembayaran tok
+                        Intent i = new Intent(MainActivity.this, PenjualanActivity.class);
+                        startActivity(i);
+                    }
+                    else {
+                        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                        drawer.closeDrawers();
+                        Toast.makeText(MainActivity.this, "Anda Belum Login!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        });
+    }
+
+    private void loginCheck() {
+        try {
+            sp = getSharedPreferences("login", MODE_PRIVATE);
+            login_cred = sp.getString("login_cred", null);
+            login_role = sp.getString("login_role", null);
+
+            NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+
+            view = navigationView.getHeaderView(0);
+            roles = view.findViewById(R.id.login_role);
+
+            if (login_role.equals("1")) { // 1 == owner
+                //intent to another activity
+                roles.setText("Halo, Owner!");
+            }
+            else if (login_role.equals("2") || //2 customer service, 3 kasir, 4 montir
+                    login_role.equals("3") ||
+                    login_role.equals("4")) {
+                roles.setText("Halo, Pegawai!");
+            }
+
+            Log.d("login_cred", login_cred);
+            Log.d("login_role", login_role);
+        }
+        catch (Exception e) {
+            sp = getSharedPreferences("login", MODE_PRIVATE);
+            SharedPreferences.Editor ed = sp.edit();
+            ed.putString("login_cred", "null");
+            ed.putString("login_role", "null");
+            ed.apply();
+
+            login_cred = sp.getString("login_cred", null);
+            login_role = sp.getString("login_role", null);
+
+            roles.setText("Atma Auto");
+
+            Log.d("sp login_cred created", login_cred);
+            Log.d("sp login_role created", login_role);
+        }
     }
 
     private void getSparepart() {
@@ -205,7 +250,7 @@ public class MainActivity extends AppCompatActivity
         call.enqueue(new Callback<List<sparepart>>() {
             @Override
             public void onResponse(Call<List<sparepart>> call, Response<List<sparepart>> response) {
-                if(response.isSuccessful()) {
+                if (response.isSuccessful()) {
                     spareList = response.body();
 
                     progressDialog.dismiss();
@@ -214,8 +259,7 @@ public class MainActivity extends AppCompatActivity
                     recyclerAdapterSparepartHargaJual.notifyDataSetChanged();
                     recyclerAdapterSparepartHargaJual = new RecyclerAdapterSparepartHargaJual(getApplicationContext(), response.body()); //getresult()
                     recyclerView.setAdapter(recyclerAdapterSparepartHargaJual);
-                }
-                else {
+                } else {
                     progressDialog.dismiss();
                     Toast.makeText(getApplicationContext(), "Cek Koneksi Anda", Toast.LENGTH_SHORT).show();
                 }
@@ -233,6 +277,7 @@ public class MainActivity extends AppCompatActivity
     public void onResume() {
         super.onResume();
         getSparepart();
+        loginCheck();
     }
 
     @Override
@@ -261,6 +306,7 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Toast.makeText(this, "Test", Toast.LENGTH_SHORT).show();
             return true;
         }
 
@@ -273,19 +319,62 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-         if (id == R.id.nav_home) {
-             Toast.makeText(this, "Home pressed", Toast.LENGTH_SHORT).show();
-        }
-        else if (id == R.id.nav_motorcycle) {
-             Toast.makeText(this, "Motorcycle pressed", Toast.LENGTH_SHORT).show();
-        }
-        else if (id == R.id.nav_history) {
-             Toast.makeText(this, "History pressed", Toast.LENGTH_SHORT).show();
-        }
-        else if (id == R.id.log_in) {
-             //Toast.makeText(this, "You have been logged out!", Toast.LENGTH_SHORT).show();
-             Intent i = new Intent(MainActivity.this, LoginActivity.class);
-             startActivity(i);
+        if (id == R.id.nav_home) { //home
+            Toast.makeText(this, "Home pressed", Toast.LENGTH_SHORT).show();
+        } else if (id == R.id.nav_motorcycle) { //status reparasi
+            Toast.makeText(this, "Motorcycle pressed", Toast.LENGTH_SHORT).show();
+        } else if (id == R.id.nav_history) { //history pelanggan
+            Toast.makeText(this, "History pressed", Toast.LENGTH_SHORT).show();
+        } else if (id == R.id.log_in) {
+            //Toast.makeText(this, "You have been logged out!", Toast.LENGTH_SHORT).show();
+
+            SharedPreferences sp = getSharedPreferences("login", MODE_PRIVATE);
+            login_cred = sp.getString("login_cred", null);
+            login_role = sp.getString("login_role", null);
+
+            if (login_cred.equals("null") && login_role.equals("null")) {
+                Intent i = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(i);
+            } else {
+                Toast.makeText(this, "Anda sudah Login!", Toast.LENGTH_SHORT).show();
+            }
+        } else if (id == R.id.log_out) {
+            sp = getSharedPreferences("login", MODE_PRIVATE);
+            login_cred = sp.getString("login_cred", null);
+            login_role = sp.getString("login_role", null);
+
+            if (login_cred.equals("null") && login_role.equals("null")) {
+                Log.d("login", "sudah");
+                Toast.makeText(this, "Anda Belum Login!", Toast.LENGTH_SHORT).show();
+            } else {
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setTitle("Anda yakin ingin logout?");
+
+                builder.setNegativeButton("Tidak", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+
+                builder.setPositiveButton("Ya", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //log out function
+                        SharedPreferences sp = getSharedPreferences("login", MODE_PRIVATE);
+                        SharedPreferences.Editor ed = sp.edit();
+                        ed.putString("login_cred", "null");
+                        ed.putString("login_role", "null");
+                        ed.apply();
+
+                        roles.setText("Atma Auto");
+
+                        Toast.makeText(MainActivity.this, "Anda Berhasil Logout!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                builder.show();
+            }
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

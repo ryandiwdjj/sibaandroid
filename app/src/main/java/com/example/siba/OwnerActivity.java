@@ -1,5 +1,8 @@
 package com.example.siba;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,6 +16,10 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import java.security.acl.Owner;
+
+import Service.SparepartCheck;
+
 public class OwnerActivity extends AppCompatActivity {
 
     LinearLayout supplier_button;
@@ -20,6 +27,10 @@ public class OwnerActivity extends AppCompatActivity {
     LinearLayout pengadaan_button;
     LinearLayout penjualan_button;
     LinearLayout laporan_button;
+
+
+    private PendingIntent pendingIntent;
+    private AlarmManager manager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +41,15 @@ public class OwnerActivity extends AppCompatActivity {
         myToolBar.setTitle("Owner");
         myToolBar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
         setSupportActionBar(myToolBar);
+
+        //retrieve a PendingIntent that will perform a broadcast
+        Intent i = new Intent(this, SparepartCheck.class);
+        pendingIntent = PendingIntent.getBroadcast(this, 0, i, 0);
+
+        manager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+        int interval = 3000;
+
+        manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), interval, pendingIntent);
 
         supplier_button = findViewById(R.id.supplier_btn);
         sparepart_button = findViewById(R.id.sparepart_btn);
@@ -91,9 +111,8 @@ public class OwnerActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.logout_owner:
-                AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
+        if(item.getItemId() == R.id.logout_owner){
+                AlertDialog.Builder builder = new AlertDialog.Builder(OwnerActivity.this);
                 builder.setTitle("Anda yakin ingin logout?");
 
                 builder.setNegativeButton("Tidak", new DialogInterface.OnClickListener() {
@@ -109,11 +128,15 @@ public class OwnerActivity extends AppCompatActivity {
                         //log out function
                         SharedPreferences sp = getSharedPreferences("login", MODE_PRIVATE);
                         SharedPreferences.Editor ed = sp.edit();
-                        ed.putString("login_cred", null);
-                        ed.putString("login_role", null);
+                        ed.putString("login_cred", "null");
+                        ed.putString("login_role", "null");
+                        ed.apply();
+
+                        finish();
+                        startActivity(new Intent(OwnerActivity.this, MainActivity.class));
                     }
                 });
-                break;
+                builder.show();
         }
         return true;
     }

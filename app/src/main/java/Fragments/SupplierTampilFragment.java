@@ -1,6 +1,8 @@
 package Fragments;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -93,9 +95,39 @@ public class SupplierTampilFragment extends Fragment {
             public void onLongClick(View view, int position) {
                 sup = supList.get(position);
                 Log.d("long click", "long click pressed");
-//                Intent i = new Intent(Intent.ACTION_CALL);
-//                i.setData(Uri.parse(sup.getAlamat_supplier()));
-//                startActivity(i);
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setTitle("Hapus sparepart " + sup.getNama_supplier() + "?");
+                builder.setNegativeButton("Tidak", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
+
+                builder.setPositiveButton("Ya", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //method delete
+                        apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
+                        Call<supplier> call = apiInterface.deleteSupplier(sup.getId_supplier());
+
+                        call.enqueue(new Callback<supplier>() {
+                            @Override
+                            public void onResponse(Call<supplier> call, Response<supplier> response) {
+                                if(response.isSuccessful()) {
+                                    Toast.makeText(getContext(), "Supplier Terhapus", Toast.LENGTH_SHORT).show();
+                                }
+                                else {
+                                    Toast.makeText(getContext(), "Cek Koneksi anda", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                            @Override
+                            public void onFailure(Call<supplier> call, Throwable t) {
+                                Log.e("onFailure", t.getMessage());
+                            }
+                        });
+                    }
+                });
+                builder.show();
             }
         }));
         getSupplier();

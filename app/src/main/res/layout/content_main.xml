@@ -13,6 +13,7 @@
         android:id="@+id/search_box"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
+        app:titleTextColor="@color/white"
         android:orientation="horizontal">
 
         <SearchView
