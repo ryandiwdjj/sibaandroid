@@ -18,6 +18,7 @@ import android.widget.Toast;
 import API.ApiClient;
 import API.ApiInterface;
 import Models.pegawai;
+import Models.pelanggan;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -95,10 +96,50 @@ public class LoginActivity extends AppCompatActivity {
                     if (phone_txt.getText().toString().isEmpty()) {
                         Toast.makeText(getApplicationContext(), "Nomor handphone harus terisi!", Toast.LENGTH_LONG).show();
                     }
-                    else {
-                        //login pelanggan function
-                        progressDialog.show();
-                        progressDialog.dismiss();
+                    else { //bagian pegawai
+                        if (phone_txt.getText().toString().isEmpty()) {
+                            Toast.makeText(LoginActivity.this, "Field harus terisi semua", Toast.LENGTH_SHORT).show();
+                        }
+                        else {
+                            progressDialog.show();
+                            ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
+
+                            Call<pelanggan> call = apiInterface.loginPelanggan(phone_txt.getText().toString());
+                            call.enqueue(new Callback<pelanggan>() {
+                                @Override
+                                public void onResponse(Call<pelanggan> call, Response<pelanggan> response) {
+                                    if (response.isSuccessful()) {
+
+                                        //save login credential
+                                        try {
+                                            SharedPreferences sp = getSharedPreferences("login", MODE_PRIVATE);
+                                            SharedPreferences.Editor ed = sp.edit();
+
+                                            ed.putString("login_cred", response.body().getNo_telp_pelanggan());
+                                            ed.putString("login_role", "g");
+                                            ed.apply();
+
+                                            progressDialog.dismiss();
+                                            finish();
+                                        }
+                                        catch (Exception e) {
+                                            Log.e("exception", e.getMessage());
+                                            Toast.makeText(LoginActivity.this, "Cek koneksi anda!", Toast.LENGTH_SHORT).show();
+                                        }
+
+                                    } else {
+                                        Log.e("onResponse", response.message());
+                                        progressDialog.dismiss();
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<pelanggan> call, Throwable t) {
+                                    progressDialog.dismiss();
+                                    Log.e("onFailure", t.getMessage());
+                                }
+                            });
+                        }
                     }
                 }
                 else { //bagian pegawai
@@ -109,7 +150,7 @@ public class LoginActivity extends AppCompatActivity {
                     else {
                         progressDialog.show();
                         ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
-                        Call<pegawai> call = apiInterface.login(phone_txt.getText().toString(),
+                        Call<pegawai> call = apiInterface.loginPegawai(phone_txt.getText().toString(),
                                 password_txt.getText().toString());
 
                         call.enqueue(new Callback<pegawai>() {

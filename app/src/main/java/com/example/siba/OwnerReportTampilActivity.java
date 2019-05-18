@@ -1,6 +1,8 @@
 package com.example.siba;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.webkit.WebSettings;
@@ -23,6 +25,25 @@ public class OwnerReportTampilActivity extends AppCompatActivity {
         Intent i = getIntent();
 
         report = findViewById(R.id.report_web);
+
+        report.setWebViewClient(new WebViewClient() {
+
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String urlNewString) {
+                return false;
+            }
+
+            @Override
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                super.onPageStarted(view, url, favicon);
+
+            }
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+            }
+        });
 
         switch (i.getStringExtra("tipe")) {
             case ("pendapatan_bulanan"):

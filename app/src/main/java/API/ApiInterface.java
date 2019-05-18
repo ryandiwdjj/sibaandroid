@@ -98,19 +98,22 @@ public interface ApiInterface {
 
     @POST("pegawai/login")
     @FormUrlEncoded
-    Call<pegawai> login(@Field("no_telp_pegawai") String no_telp_pegawai
+    Call<pegawai> loginPegawai(@Field("no_telp_pegawai") String no_telp_pegawai
                         ,@Field("password_pegawai") String password_pegawai);
 
     ////////////////////////////////////////////////////////////////////////////////////////////////CRUD PELANGGAN
 
     @POST("mobile/pelanggan/login")
     @FormUrlEncoded
-    Call<pelanggan> login(@Field("no_telp_pelanggan") String no_telp_pelanggan);
+    Call<pelanggan> loginPelanggan(@Field("no_telp_pelanggan") String no_telp_pelanggan);
 
     ////////////////////////////////////////////////////////////////////////////////////////////////TRANSACTION
 
     @GET("mobile/trans_penjualan/")
     Call<List<penjualan>> getPenjualan();
+
+    @GET("mobile/trans_penjualan/getByid/{id}")
+    Call<List<penjualan>> getPenjualanById(@Path("id") Integer id);
 
     ////////////////////////////////////////////////////////////////////////////////////////////////PENGADAAN
 

@@ -28,7 +28,6 @@ public class OwnerActivity extends AppCompatActivity {
     LinearLayout penjualan_button;
     LinearLayout laporan_button;
 
-
     private PendingIntent pendingIntent;
     private AlarmManager manager;
 

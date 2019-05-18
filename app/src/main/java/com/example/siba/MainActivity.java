@@ -40,6 +40,8 @@ import java.util.List;
 import API.ApiClient;
 import API.ApiInterface;
 //import BroadcastReceiver.SparepartCheck;
+import DialogFragment.HistoryDialogFragment;
+import DialogFragment.PelangganDialogFragment;
 import Models.sparepart;
 import Recycler.ClickListener;
 import Recycler.RecyclerAdapterSparepartHargaJual;
@@ -66,8 +68,11 @@ public class MainActivity extends AppCompatActivity
 
     private SharedPreferences sp;
 
+    private DrawerLayout drawer;
+
     private String login_cred;
     private String login_role;
+    private String pelanggan_data;
 
     private View view;
     private TextView roles;
@@ -77,13 +82,20 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
         Date c = Calendar.getInstance().getTime();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         String formattedDate = df.format(c);
 
         Log.d("date now", formattedDate);
 
-
+        try {
+            pelanggan_data = getIntent().getStringExtra("pelanggan_data");
+        }
+        catch (Exception e) {
+            Log.e("exception", e.getMessage());
+        }
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
 
@@ -151,7 +163,7 @@ public class MainActivity extends AppCompatActivity
         getSparepart();
 
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -173,7 +185,7 @@ public class MainActivity extends AppCompatActivity
                 Log.d("login_role", login_role);
 
                 if (login_cred.equals("null") && login_role.equals("null")) {
-                    DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
                     drawer.closeDrawers();
                     Toast.makeText(MainActivity.this, "Anda Belum Login!", Toast.LENGTH_SHORT).show();
                 }
@@ -189,6 +201,17 @@ public class MainActivity extends AppCompatActivity
                         //intent menu pembayaran tok
                         Intent i = new Intent(MainActivity.this, PenjualanActivity.class);
                         startActivity(i);
+                    }
+                    else if (login_role.equals("g")) { // 1 == owner
+                        //intent to another activity
+                        drawer.closeDrawers();
+
+                        PelangganDialogFragment dialog = new PelangganDialogFragment();
+                        Bundle bundle = new Bundle();
+                        bundle.putString("data", login_cred);
+
+                        dialog.setArguments(bundle);
+                        dialog.show(getSupportFragmentManager(), "dialog");
                     }
                     else {
                         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -219,6 +242,10 @@ public class MainActivity extends AppCompatActivity
                     login_role.equals("3") ||
                     login_role.equals("4")) {
                 roles.setText("Halo, Pegawai!");
+            }
+
+            else if(login_role.equals("g")) {
+                roles.setText("Halo, Tamu!");
             }
 
             Log.d("login_cred", login_cred);
@@ -255,7 +282,6 @@ public class MainActivity extends AppCompatActivity
 
                     progressDialog.dismiss();
 
-
                     recyclerAdapterSparepartHargaJual.notifyDataSetChanged();
                     recyclerAdapterSparepartHargaJual = new RecyclerAdapterSparepartHargaJual(getApplicationContext(), response.body()); //getresult()
                     recyclerView.setAdapter(recyclerAdapterSparepartHargaJual);
@@ -286,7 +312,28 @@ public class MainActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+            builder.setTitle("Anda yakin ingin keluar?");
+
+            builder.setNegativeButton("Tidak", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                }
+            });
+
+            builder.setPositiveButton("Ya", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    finish();
+                    System.exit(0);
+//                    MainActivity.super.onBackPressed();
+                }
+            });
+            builder.show();
+
+//            super.onBackPressed();
         }
     }
 
@@ -320,14 +367,41 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_home) { //home
-            Toast.makeText(this, "Home pressed", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "Home pressed", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_motorcycle) { //status reparasi
-            Toast.makeText(this, "Motorcycle pressed", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "Motorcycle pressed", Toast.LENGTH_SHORT).show();
+            if (login_role.equals("g")) { // 1 == owner
+                //intent to another activity
+                drawer.closeDrawers();
+
+//                HistoryDialogFragment dialog = new HistoryDialogFragment();
+//                Bundle bundle = new Bundle();
+//                bundle.putString("login_cred", login_cred);
+//
+//                dialog.setArguments(bundle);
+//                dialog.show(getSupportFragmentManager(), "dialog");
+            }
+            else {
+                Toast.makeText(this, "Tidak ada", Toast.LENGTH_SHORT).show();
+            }
         } else if (id == R.id.nav_history) { //history pelanggan
-            Toast.makeText(this, "History pressed", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "History pressed", Toast.LENGTH_SHORT).show();
+            if (login_role.equals("g")) { // 1 == owner
+                //intent to another activity
+                drawer.closeDrawers();
+
+                HistoryDialogFragment dialog = new HistoryDialogFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString("login_cred", login_cred);
+
+                dialog.setArguments(bundle);
+                dialog.show(getSupportFragmentManager(), "dialog");
+            }
+            else {
+                Toast.makeText(this, "Tidak ada", Toast.LENGTH_SHORT).show();
+            }
         } else if (id == R.id.log_in) {
             //Toast.makeText(this, "You have been logged out!", Toast.LENGTH_SHORT).show();
-
             SharedPreferences sp = getSharedPreferences("login", MODE_PRIVATE);
             login_cred = sp.getString("login_cred", null);
             login_role = sp.getString("login_role", null);
