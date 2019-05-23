@@ -72,6 +72,8 @@ public class PengadaanTambahFragment extends Fragment {
     final private Integer RC_SUPPLIER = 1;
     final private Integer RC_SPAREPART = 2;
     final private Integer RC_DETAIL = 3;
+    private Integer temp_jumlah;
+    private Integer temp_spare_pos;
 
     ArrayAdapter<String> adapter;
 
@@ -81,6 +83,7 @@ public class PengadaanTambahFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RC_CABANG) {
             cabangJSON = data.getStringExtra("data_cabang");
             Log.d("onActivityResultsCabang", cabangJSON);
@@ -100,13 +103,15 @@ public class PengadaanTambahFragment extends Fragment {
             Log.d("onActivityResultsSpare", spareJSON);
             spareObj = new Gson().fromJson(spareJSON, sparepart.class);
 
-            detail_pengadaan = new detail_pengadaan(spareObj.getId_sparepart(), 1, spareObj.getNama_sparepart(),
-                    spareObj.getGambar_sparepart(), spareObj.getHarga_beli_sparepart());
 
             //if data was added then add exception
             if (contains(detail_pengadaanList, spareObj)) {
                 Toast.makeText(getContext(), "Data Sudah Ada!", Toast.LENGTH_SHORT).show();
             } else {
+
+                detail_pengadaan = new detail_pengadaan(spareObj.getId_sparepart(), 1, spareObj.getNama_sparepart(),
+                        spareObj.getGambar_sparepart(), spareObj.getHarga_beli_sparepart());
+
                 Log.d("added to list", detail_pengadaan.getNama_sparepart());
                 detail_pengadaanList.add(detail_pengadaan);
 
@@ -115,9 +120,37 @@ public class PengadaanTambahFragment extends Fragment {
                 recyclerAdapterDetailPengadaan = new RecyclerAdapterDetailPengadaan(getContext(), detail_pengadaanList); //getresult()
                 recyclerView.setAdapter(recyclerAdapterDetailPengadaan);
             }
-        }
+        } else if (resultCode == RC_DETAIL) {
+            temp_jumlah = Integer.parseInt(data.getStringExtra("jumlah_pengadaan"));
+            temp_spare_pos = Integer.parseInt(data.getStringExtra("spare_pos"));
 
-        super.onActivityResult(requestCode, resultCode, data);
+            Log.d("onActivityResult", temp_jumlah.toString() + " and " + temp_spare_pos.toString());
+
+            detail_pengadaanList.get(temp_spare_pos).setJumlah_pengadaan(temp_jumlah);
+
+            //update recyclerview
+            recyclerAdapterDetailPengadaan.notifyDataSetChanged();
+            recyclerAdapterDetailPengadaan = new RecyclerAdapterDetailPengadaan(getContext(), detail_pengadaanList); //getresult()
+            recyclerView.setAdapter(recyclerAdapterDetailPengadaan);
+        }
+        else if(resultCode == 4) {
+            temp_jumlah = Integer.parseInt(data.getStringExtra("jumlah_pengadaan"));
+            temp_spare_pos = Integer.parseInt(data.getStringExtra("spare_pos"));
+
+            Log.d("onActivityResult Delete", temp_jumlah.toString() + " and " + temp_spare_pos.toString());
+
+            detail_pengadaanList.remove(detail_pengadaanList.get(temp_spare_pos));
+
+            if(!detail_pengadaanList.isEmpty()) {
+                for (detail_pengadaan items : detail_pengadaanList) {
+                    Log.d("detail_pengadaanList", "berapa");
+                }
+            }
+            //update recyclerview
+            recyclerAdapterDetailPengadaan.notifyDataSetChanged();
+            recyclerAdapterDetailPengadaan = new RecyclerAdapterDetailPengadaan(getContext(), detail_pengadaanList); //getresult()
+            recyclerView.setAdapter(recyclerAdapterDetailPengadaan);
+        }
     }
 
     public boolean contains(List<detail_pengadaan> detail_pengadaanList, sparepart spare) {
@@ -204,12 +237,15 @@ public class PengadaanTambahFragment extends Fragment {
                                 //add detail pengadaan
                                 try {
                                     for (detail_pengadaan items : detail_pengadaanList) {
+
                                         Log.d("detail_pengadaan item", items.getNama_sparepart());
+
                                         Call<detail_pengadaan> pengadaanCall = apiInterface.addDetailPengadaan(response.body().getId_pengadaan(), items.getId_sparepart(), items.getJumlah_pengadaan());
                                         pengadaanCall.enqueue(new Callback<Models.detail_pengadaan>() {
                                             @Override
                                             public void onResponse(Call<Models.detail_pengadaan> call, Response<Models.detail_pengadaan> response) {
                                                 if (response.isSuccessful()) {
+                                                    Toast.makeText(getActivity(), "Data berhasil diupdate!", Toast.LENGTH_SHORT).show();
                                                 } else {
 
                                                 }
@@ -268,7 +304,10 @@ public class PengadaanTambahFragment extends Fragment {
 
                 Bundle bundle = new Bundle();
 
-                bundle.putString("jumlah_beli", "01");
+                bundle.putString("jumlah_beli", detail_pengadaan.getJumlah_pengadaan().toString());
+                bundle.putString("spare_pos", String.valueOf(position));
+
+                dialog.setArguments(bundle);
                 dialog.show(getFragmentManager(), "dialog");
             }
 
@@ -288,6 +327,7 @@ public class PengadaanTambahFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        Log.d("onResume", "in!");
     }
 
 }

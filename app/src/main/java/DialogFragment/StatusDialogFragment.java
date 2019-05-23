@@ -2,6 +2,7 @@ package DialogFragment;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -16,76 +17,71 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.siba.R;
-import com.example.siba.TampilPengadaan;
 import com.google.gson.Gson;
-
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import API.ApiClient;
 import API.ApiInterface;
-import Models.cabang;
+import Models.penjualan;
 import Recycler.ClickListener;
-import Recycler.RecyclerAdapterCabang;
+import Recycler.RecyclerAdapterStatusDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class CabangDialogFragment extends DialogFragment {
-    private List<cabang> mListCabang = new ArrayList<>();
-    private List<cabang> cabangList;
+import static android.content.Context.MODE_PRIVATE;
+
+public class StatusDialogFragment extends DialogFragment {
+    private List<Models.penjualan> mListPenjualan = new ArrayList<>();
+    private List<penjualan> penjualanList;
     ApiInterface apiInterface;
     private RecyclerView recyclerView;
-    RecyclerAdapterCabang recyclerAdapterCabang;
-    private cabang cab;
-    private String cabangJSON="";
+    RecyclerAdapterStatusDialog recyclerAdapterStatusDialog;
+    private penjualan penjualan;
+    private String penjualanJSON="";
+    private String data;
     private Intent intent;
-
+    private Bundle bundle;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.dialog_fragment_cabang, container, false);
+        View v = inflater.inflate(R.layout.dialog_fragment_status, container, false);
+
+        SharedPreferences sp = this.getActivity().getSharedPreferences("login", MODE_PRIVATE);
+        data = sp.getString("login_cred", null);
 
         apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
 
-//        cabangJSON="";
-
         //get references
-        recyclerView = v.findViewById(R.id.recycler_dialog_cabang);
-        recyclerAdapterCabang = new RecyclerAdapterCabang(this.getActivity(), mListCabang);
+        recyclerView = v.findViewById(R.id.recycler_dialog_status);
+        recyclerAdapterStatusDialog = new RecyclerAdapterStatusDialog(this.getActivity(), mListPenjualan);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext().getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(recyclerAdapterCabang);
+        recyclerView.setAdapter(recyclerAdapterStatusDialog);
 
-        recyclerView.addOnItemTouchListener(new RecyclerAdapterCabang(getContext(), recyclerView, new ClickListener() {
+        recyclerView.addOnItemTouchListener(new RecyclerAdapterStatusDialog(getContext(), recyclerView, new ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                cab = cabangList.get(position);
+                penjualan = penjualanList.get(position);
                 //mindah data sup pake json
 //                Intent intent = new Intent(getContext(), TampilSparepart.class);
 //                intent.putExtra("sparepart_object", new Gson().toJson(spare));
 //                startActivity(intent);
 
-                cabangJSON = new Gson().toJson(cab);
-                Log.d("onClickCabang", cabangJSON);
-
-//                inputData.sendCabangData(cabangJSON);
-
-                intent = new Intent();
-                intent.putExtra("data_cabang", cabangJSON);
-
-                try {
-                    getTargetFragment().onActivityResult(getTargetRequestCode(), 0, intent);
-                    dismiss();
-                }catch (Exception e) {
-                    ((TampilPengadaan)getActivity()).setCabang(cab);
-                    dismiss();
-                }
+//                penjualanJSON = new Gson().toJson(penjualan);
+////                Log.d("onClickSupplier", suppJSON);
+//
+//                intent = new Intent();
+//                intent.putExtra("data_supplier", penjualanJSON);
+////
+//
+//                getTargetFragment().onActivityResult(getTargetRequestCode(), 1, intent);
+//                getDialog().dismiss();
             }
 
             @Override
@@ -94,27 +90,28 @@ public class CabangDialogFragment extends DialogFragment {
             }
         }));
 
-        getSupplier();
+        getStatus();
         return v;
     }
 
-    private void getSupplier() {
+    private void getStatus() {
         final ProgressDialog progressDialog = new ProgressDialog(getContext());
         progressDialog.setMessage("Loading...");
         progressDialog.show();
 
-        Call<List<cabang>> call = apiInterface.getCabang();
-        call.enqueue(new Callback<List<cabang>>() {
+        Call<List<penjualan>> call = apiInterface.getStatusById(Integer.parseInt(data));
+        call.enqueue(new Callback<List<penjualan>>() {
             @Override
-            public void onResponse(Call<List<cabang>> call, Response<List<cabang>> response) {
+            public void onResponse(Call<List<penjualan>> call, Response<List<penjualan>> response) {
                 if(response.isSuccessful()) {
-                    cabangList = response.body();
+                    penjualanList = response.body();
 
                     progressDialog.dismiss();
 
-                    recyclerAdapterCabang.notifyDataSetChanged();
-                    recyclerAdapterCabang = new RecyclerAdapterCabang(getContext(), cabangList); //getresult()
-                    recyclerView.setAdapter(recyclerAdapterCabang);
+                    recyclerAdapterStatusDialog.notifyDataSetChanged();
+                    recyclerAdapterStatusDialog = new RecyclerAdapterStatusDialog(getContext(), response.body()); //getresult()
+//                    Log.d("response body", response.body().toString());
+                    recyclerView.setAdapter(recyclerAdapterStatusDialog);
                 }
                 else {
                     progressDialog.dismiss();
@@ -123,7 +120,7 @@ public class CabangDialogFragment extends DialogFragment {
             }
 
             @Override
-            public void onFailure(Call<List<cabang>> call, Throwable t) {
+            public void onFailure(Call<List<penjualan>> call, Throwable t) {
                 progressDialog.dismiss();
                 Log.e("onFailureTampil", t.getMessage());
             }
@@ -139,6 +136,10 @@ public class CabangDialogFragment extends DialogFragment {
     @Override
     public void onResume() {
         super.onResume();
-        getSupplier();
+        getStatus();
+        ViewGroup.LayoutParams params = getDialog().getWindow().getAttributes();
+        params.width = ViewGroup.LayoutParams.MATCH_PARENT;
+        params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+        getDialog().getWindow().setAttributes((android.view.WindowManager.LayoutParams) params);
     }
 }

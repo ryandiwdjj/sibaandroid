@@ -42,6 +42,7 @@ import API.ApiInterface;
 //import BroadcastReceiver.SparepartCheck;
 import DialogFragment.HistoryDialogFragment;
 import DialogFragment.PelangganDialogFragment;
+import DialogFragment.StatusDialogFragment;
 import Models.sparepart;
 import Recycler.ClickListener;
 import Recycler.RecyclerAdapterSparepartHargaJual;
@@ -146,18 +147,18 @@ public class MainActivity extends AppCompatActivity
 
             @Override
             public void onLongClick(View view, int position) {
-                spare = spareList.get(position);
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                LayoutInflater factory = LayoutInflater.from(MainActivity.this);
-
+//                spare = spareList.get(position);
+//                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+//                LayoutInflater factory = LayoutInflater.from(MainActivity.this);
+//
 //                Picasso.get().load(spare.getGambar_sparepart()).into(diag_image_view);
-
-                final View imageView = factory.inflate(R.layout.image_view, null);
-
-                builder.setView(imageView);
-
-                builder.show();
-                Log.d("long click", spare.getId_sparepart().toString());
+//
+//                final View imageView = factory.inflate(R.layout.image_view, null);
+//
+//                builder.setView(imageView);
+//
+//                builder.show();
+//                Log.d("long click", spare.getId_sparepart().toString());
             }
         }));
         getSparepart();
@@ -374,12 +375,12 @@ public class MainActivity extends AppCompatActivity
                 //intent to another activity
                 drawer.closeDrawers();
 
-//                HistoryDialogFragment dialog = new HistoryDialogFragment();
-//                Bundle bundle = new Bundle();
-//                bundle.putString("login_cred", login_cred);
-//
-//                dialog.setArguments(bundle);
-//                dialog.show(getSupportFragmentManager(), "dialog");
+                StatusDialogFragment dialog = new StatusDialogFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString("login_cred", login_cred);
+
+                dialog.setArguments(bundle);
+                dialog.show(getSupportFragmentManager(), "dialog");
             }
             else {
                 Toast.makeText(this, "Tidak ada", Toast.LENGTH_SHORT).show();
@@ -400,7 +401,8 @@ public class MainActivity extends AppCompatActivity
             else {
                 Toast.makeText(this, "Tidak ada", Toast.LENGTH_SHORT).show();
             }
-        } else if (id == R.id.log_in) {
+        }
+        else if (id == R.id.log_in) {
             //Toast.makeText(this, "You have been logged out!", Toast.LENGTH_SHORT).show();
             SharedPreferences sp = getSharedPreferences("login", MODE_PRIVATE);
             login_cred = sp.getString("login_cred", null);

@@ -21,6 +21,8 @@ import java.util.List;
 
 import Models.sparepart;
 
+import static API.ApiClient.getImageUrl;
+
 public class RecyclerAdapterSparepartDialog extends RecyclerView.Adapter<RecyclerAdapterSparepartDialog.MyViewHolder>
         implements RecyclerView.OnItemTouchListener {
     private Context context;
@@ -52,7 +54,7 @@ public class RecyclerAdapterSparepartDialog extends RecyclerView.Adapter<Recycle
         myViewHolder.harga_beli.setText("Rp. " + spare.getHarga_beli_sparepart().toString()); //get harga beli sparepart
         myViewHolder.kode_spare.setText(spare.getKode_sparepart());
 
-        Picasso.get().load(spare.getGambar_sparepart()).resize(200,200)
+        Picasso.get().load(getImageUrl() + spare.getGambar_sparepart()).resize(200,200)
                 .centerCrop().placeholder(R.drawable.ic_atmaauto).into(myViewHolder.gambar_sparepart);
         //set image
     }

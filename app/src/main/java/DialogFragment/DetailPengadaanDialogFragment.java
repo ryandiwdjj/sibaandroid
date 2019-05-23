@@ -1,6 +1,8 @@
 package DialogFragment;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,12 +15,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.siba.R;
+import com.example.siba.TampilPengadaan;
 import com.google.gson.Gson;
 
 import org.w3c.dom.Text;
@@ -39,11 +43,13 @@ public class DetailPengadaanDialogFragment extends DialogFragment {
     ApiInterface apiInterface;
 
     private EditText jumlah_beli;
-    private ImageButton add_btn;
-    private ImageButton remove_btn;
-    private TextView cancel_btn;
-    private TextView delete_btn;
-    private TextView save_btn;
+//    private ImageButton add_btn;
+//    private ImageButton remove_btn;
+    private Button cancel_btn;
+    private Button delete_btn;
+    private Button save_btn;
+
+    private String spare_pos;
 
     @Nullable
     @Override
@@ -54,11 +60,22 @@ public class DetailPengadaanDialogFragment extends DialogFragment {
         apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
 
         jumlah_beli = v.findViewById(R.id.jumlah_beli);
-        add_btn = v.findViewById(R.id.button_add);
-        remove_btn = v.findViewById(R.id.button_remove);
+//        add_btn = v.findViewById(R.id.button_add);
+//        remove_btn = v.findViewById(R.id.button_remove);
         cancel_btn = v.findViewById(R.id.batal_btn);
         delete_btn = v.findViewById(R.id.hapus_btn);
         save_btn = v.findViewById(R.id.simpan_btn);
+
+        try {
+            Bundle bundle = getArguments();
+            jumlah_beli.setText(bundle.getString("jumlah_beli"));
+            spare_pos = bundle.getString("spare_pos");
+
+            Log.d("getArgument", jumlah_beli.getText().toString() + " and " + spare_pos);
+        }
+        catch (Exception e) {
+            Log.e("exception catch", e.getMessage());
+        }
 
 //        add_btn.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -84,14 +101,87 @@ public class DetailPengadaanDialogFragment extends DialogFragment {
         delete_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //delete sparepart tersebut
+                Log.d("delete onClick", "pressed");
 
+                Intent intent = new Intent();
+
+                intent.putExtra("spare_pos", spare_pos);
+                intent.putExtra("jumlah_pengadaan", jumlah_beli.getText().toString());
+
+                try {
+                    Log.d("onClick", "pressed");
+                    getTargetFragment().onActivityResult(getTargetRequestCode(), 4, intent);
+                    dismiss();
+                }catch (Exception e) {
+                    Log.e("exception delete_btn", e.getMessage());
+                    ((TampilPengadaan)getActivity())
+                            .deleteSparepart(Integer.parseInt(jumlah_beli.getText().toString()), Integer.parseInt(spare_pos));
+                    dismiss();
+                }
             }
         });
 
         save_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(Integer.parseInt(jumlah_beli.getText().toString()) < 0 ) {
+                    Toast.makeText(getActivity(), "Jumlah beli tidak kosong!", Toast.LENGTH_SHORT).show();
+                }
+                else if(Integer.parseInt(jumlah_beli.getText().toString()) == 0 ) {
 
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setTitle("Anda yakin ingin hapus data?");
+
+                    builder.setNegativeButton("Tidak", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                        }
+                    });
+
+                    builder.setPositiveButton("Ya", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            //delete sparepart tersebut
+                            Log.d("delete onClick", "pressed");
+
+                            Intent intent = new Intent();
+
+                            intent.putExtra("spare_pos", spare_pos);
+                            intent.putExtra("jumlah_pengadaan", jumlah_beli.getText().toString());
+
+                            try {
+                                Log.d("onClick", "pressed");
+                                getTargetFragment().onActivityResult(getTargetRequestCode(), 4, intent);
+                                dismiss();
+                            }catch (Exception e) {
+                                Log.e("exception delete_btn", e.getMessage());
+                                ((TampilPengadaan)getActivity())
+                                        .deleteSparepart(Integer.parseInt(jumlah_beli.getText().toString()), Integer.parseInt(spare_pos));
+                                dismiss();
+                            }
+                        }
+                    });
+                    builder.show();
+                }
+                else {
+                    //update jumlah pengadaan
+                    Log.d("save onClick", jumlah_beli.getText().toString() + " and " + spare_pos);
+                    Intent intent = new Intent();
+
+                    intent.putExtra("spare_pos", spare_pos);
+                    intent.putExtra("jumlah_pengadaan", jumlah_beli.getText().toString());
+                    try {
+                        Log.d("onClick", "pressed");
+                        getTargetFragment().onActivityResult(getTargetRequestCode(), 3, intent);
+                        dismiss();
+                    } catch (Exception e) {
+                        Log.e("exception save_btn", e.getMessage());
+                        ((TampilPengadaan) getActivity())
+                                .updateSparepart(Integer.parseInt(jumlah_beli.getText().toString()), Integer.parseInt(spare_pos));
+                        dismiss();
+                    }
+                }
             }
         });
 
@@ -113,4 +203,5 @@ public class DetailPengadaanDialogFragment extends DialogFragment {
         params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
         getDialog().getWindow().setAttributes((android.view.WindowManager.LayoutParams) params);
     }
+
 }

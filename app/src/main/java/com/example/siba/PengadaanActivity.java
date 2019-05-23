@@ -1,5 +1,7 @@
 package com.example.siba;
 
+import android.content.Intent;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,6 +15,11 @@ import Fragments.PengadaanTampilFragment;
 public class PengadaanActivity extends AppCompatActivity {
     //fragment declaration
     FragmentManager fragmentManager = getSupportFragmentManager();
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

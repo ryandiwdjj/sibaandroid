@@ -74,15 +74,15 @@ public class HistoryDialogFragment extends DialogFragment {
 //                intent.putExtra("sparepart_object", new Gson().toJson(spare));
 //                startActivity(intent);
 
-                penjualanJSON = new Gson().toJson(penjualan);
-//                Log.d("onClickSupplier", suppJSON);
-
-                intent = new Intent();
-                intent.putExtra("data_supplier", penjualanJSON);
+//                penjualanJSON = new Gson().toJson(penjualan);
+////                Log.d("onClickSupplier", suppJSON);
 //
-
-                getTargetFragment().onActivityResult(getTargetRequestCode(), 1, intent);
-                getDialog().dismiss();
+//                intent = new Intent();
+//                intent.putExtra("data_supplier", penjualanJSON);
+////
+//
+//                getTargetFragment().onActivityResult(getTargetRequestCode(), 1, intent);
+//                getDialog().dismiss();
             }
 
             @Override
@@ -100,7 +100,7 @@ public class HistoryDialogFragment extends DialogFragment {
         progressDialog.setMessage("Loading...");
         progressDialog.show();
 
-        Call<List<penjualan>> call = apiInterface.getPenjualanById(Integer.parseInt(data));
+        Call<List<penjualan>> call = apiInterface.getHistoryById(Integer.parseInt(data));
         call.enqueue(new Callback<List<penjualan>>() {
             @Override
             public void onResponse(Call<List<penjualan>> call, Response<List<penjualan>> response) {
@@ -111,7 +111,7 @@ public class HistoryDialogFragment extends DialogFragment {
 
                     recyclerAdapterHistoryDialog.notifyDataSetChanged();
                     recyclerAdapterHistoryDialog = new RecyclerAdapterHistoryDialog(getContext(), response.body()); //getresult()
-//                    Log.d("response body", response.body().toString());
+                    Log.d("response body history", response.body().toString());
                     recyclerView.setAdapter(recyclerAdapterHistoryDialog);
                 }
                 else {

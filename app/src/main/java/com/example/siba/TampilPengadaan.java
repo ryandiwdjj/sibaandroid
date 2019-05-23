@@ -1,5 +1,6 @@
 package com.example.siba;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -53,8 +54,9 @@ import retrofit2.Response;
 public class TampilPengadaan extends AppCompatActivity {
     private List<Models.detail_pengadaan> detail_pengadaanList = new ArrayList<>();
     private detail_pengadaan detail_pengadaan;
-    private EditText nama_supplier;
-    private EditText nama_cabang;
+    public EditText nama_supplier;
+    public EditText nama_cabang;
+    public TextView total_harga;
     private ImageButton tambah_cabang_btn;
     private ImageButton tambah_supplier_btn;
     private ImageButton tambah_spare_btn;
@@ -83,45 +85,75 @@ public class TampilPengadaan extends AppCompatActivity {
     FragmentManager manager = getSupportFragmentManager();
     private pengadaan pengadaan;
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (requestCode == RC_CABANG) {
-            cabangJSON = data.getStringExtra("data_cabang");
-            Log.d("onActivityResultsCabang", cabangJSON);
+    public void setCabang(cabang cab) {
+        this.cabangObj = cab;
 
-            cabangObj = new Gson().fromJson(cabangJSON, cabang.class);
+        Log.d("cabang obj created", cabangObj.toString());
+        nama_cabang.setText(cabangObj.getNama_cabang());
+    }
 
-            nama_cabang.setText(cabangObj.getNama_cabang());
-        } else if (resultCode == RC_SUPPLIER) {
-            suppJSON = data.getStringExtra("data_supplier");
-            Log.d("onActivityResultsSupp", suppJSON);
+    public void setSupplier(supplier supplier) {
+        this.suppObj = supplier;
 
-            suppObj = new Gson().fromJson(suppJSON, supplier.class);
+        Log.d("supplier obj created", suppObj.toString());
+        nama_supplier.setText(suppObj.getNama_supplier());
+    }
 
-            nama_supplier.setText(suppObj.getNama_supplier());
-        } else if (resultCode == RC_SPAREPART) {
-            spareJSON = data.getStringExtra("data_sparepart");
-            Log.d("onActivityResultsSpare", spareJSON);
-            spareObj = new Gson().fromJson(spareJSON, sparepart.class);
+    public void updateSparepart(Integer temp_jumlah, Integer temp_spare_pos) {
+        Log.d("onActivityResult", temp_jumlah.toString() + " and " + temp_spare_pos.toString());
 
-            detail_pengadaan = new detail_pengadaan(spareObj.getId_sparepart(), 1, spareObj.getNama_sparepart(),
-                    spareObj.getGambar_sparepart(), spareObj.getHarga_beli_sparepart());
+        detail_pengadaanList.get(temp_spare_pos).setJumlah_pengadaan(temp_jumlah);
 
-            //if data was added then add exception
-            if (contains(detail_pengadaanList, spareObj)) {
-                Toast.makeText(getApplicationContext(), "Data Sudah Ada!", Toast.LENGTH_SHORT).show();
-            } else {
-                Log.d("added to list", detail_pengadaan.getNama_sparepart());
-                detail_pengadaanList.add(detail_pengadaan);
+        //update recyclerview
+        recyclerAdapterDetailPengadaan.notifyDataSetChanged();
+        recyclerAdapterDetailPengadaan = new RecyclerAdapterDetailPengadaan(this, detail_pengadaanList); //getresult()
+        recyclerView.setAdapter(recyclerAdapterDetailPengadaan);
+    }
 
-                //update recyclerview
-                recyclerAdapterDetailPengadaan.notifyDataSetChanged();
-                recyclerAdapterDetailPengadaan = new RecyclerAdapterDetailPengadaan(getApplicationContext(), detail_pengadaanList); //getresult()
-                recyclerView.setAdapter(recyclerAdapterDetailPengadaan);
+    public void deleteSparepart(Integer temp_jumlah, Integer temp_spare_pos) {
+
+        Log.d("onActivityResult Delete", temp_jumlah.toString() + " and " + temp_spare_pos.toString());
+
+        detail_pengadaanList.remove(detail_pengadaanList.get(temp_spare_pos));
+
+        if(!detail_pengadaanList.isEmpty()) {
+            for (detail_pengadaan items : detail_pengadaanList) {
+                Log.d("detail_pengadaanList", "berapa");
             }
         }
 
-        super.onActivityResult(requestCode, resultCode, data);
+        //olah data sub total harga
+//        sub_total_harga = sub_total_harga - (spareObj.getHarga_beli_sparepart() * 1);
+//        total_harga.setText(sub_total_harga.toString());
+
+        //update recyclerview
+        recyclerAdapterDetailPengadaan.notifyDataSetChanged();
+        recyclerAdapterDetailPengadaan = new RecyclerAdapterDetailPengadaan(this, detail_pengadaanList); //getresult()
+        recyclerView.setAdapter(recyclerAdapterDetailPengadaan);
+    }
+
+    public void setSparepart(sparepart spare) {
+        this.spareObj = spare;
+
+        detail_pengadaan = new detail_pengadaan(spareObj.getId_sparepart(), 1, spareObj.getNama_sparepart(),
+                spareObj.getGambar_sparepart(), spareObj.getHarga_beli_sparepart());
+
+        //if data was added then add exception
+        if (contains(detail_pengadaanList, spareObj)) {
+            Toast.makeText(getApplicationContext(), "Data Sudah Ada!", Toast.LENGTH_SHORT).show();
+        } else {
+            Log.d("added to list", detail_pengadaan.getNama_sparepart());
+            detail_pengadaanList.add(detail_pengadaan);
+
+            //olah data sub total harga
+//            sub_total_harga = sub_total_harga + (spareObj.getHarga_beli_sparepart() * 1);
+//            total_harga.setText(sub_total_harga.toString());
+
+            //update recyclerview
+            recyclerAdapterDetailPengadaan.notifyDataSetChanged();
+            recyclerAdapterDetailPengadaan = new RecyclerAdapterDetailPengadaan(getApplicationContext(), detail_pengadaanList); //getresult()
+            recyclerView.setAdapter(recyclerAdapterDetailPengadaan);
+        }
     }
 
     public boolean contains(List<detail_pengadaan> detail_pengadaanList, sparepart spare) {
@@ -133,6 +165,7 @@ public class TampilPengadaan extends AppCompatActivity {
         }
         return false;
     }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -155,6 +188,8 @@ public class TampilPengadaan extends AppCompatActivity {
 
         nama_supplier = findViewById(R.id.nama_supplier_txt);
         nama_cabang = findViewById(R.id.nama_cabang_txt);
+        total_harga = findViewById(R.id.total_harga_pengadaaan);
+
         tambah_cabang_btn = findViewById(R.id.tambah_cabang_pengadaan_btn);
         tambah_supplier_btn = findViewById(R.id.tambah_supplier_pengadaan_btn);
         tambah_spare_btn = findViewById(R.id.tambah_spare_pengadaan_btn);
@@ -165,15 +200,46 @@ public class TampilPengadaan extends AppCompatActivity {
 
         //get data
         Bundle extras = getIntent().getExtras();
-        if(extras != null) {
+        if (extras != null) {
             pengadaan = new Gson().fromJson(extras.getString("pengadaan_object"), pengadaan.class);
 
-            try{
-                nama_supplier.setText(pengadaan.getNama_supplier());
-                nama_cabang.setText(pengadaan.getNama_cabang());
-            } catch(Exception e) {
-                Toast.makeText(this, "Cek Koneksi anda!", Toast.LENGTH_SHORT).show();
-            }
+            final ProgressDialog progressDialog = new ProgressDialog(this);
+            progressDialog.setMessage("Loading...");
+            progressDialog.show();
+
+            nama_supplier.setText(pengadaan.getNama_supplier());
+            nama_cabang.setText(pengadaan.getNama_cabang());
+
+            Call<List<detail_pengadaan>> call = apiInterface.getDetailPengadaanById(pengadaan.getId_pengadaan());
+            call.enqueue(new Callback<List<Models.detail_pengadaan>>() {
+                @Override
+                public void onResponse(Call<List<Models.detail_pengadaan>> call, Response<List<Models.detail_pengadaan>> response) {
+                    if (response.isSuccessful()) {
+                        progressDialog.dismiss();
+                        detail_pengadaanList = response.body();
+
+                        Log.d("isSuccess", response.toString());
+
+                        recyclerAdapterDetailPengadaan.notifyDataSetChanged();
+                        recyclerAdapterDetailPengadaan = new RecyclerAdapterDetailPengadaan(getApplicationContext(), detail_pengadaanList); //getresult()
+                        recyclerView.setAdapter(recyclerAdapterDetailPengadaan);
+                    } else { //response is failed
+                        progressDialog.dismiss();
+
+                        Toast.makeText(TampilPengadaan.this, "Gagal memuat!", Toast.LENGTH_SHORT).show();
+                        Log.e("isFailed", response.message());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<List<Models.detail_pengadaan>> call, Throwable t) {
+                    progressDialog.dismiss();
+
+                    Toast.makeText(TampilPengadaan.this, "Cek Koneksi Anda!", Toast.LENGTH_SHORT).show();
+                    Log.e("onFailure", t.getMessage());
+                }
+            });
+
         }
 
         tambah_cabang_btn.setOnClickListener(new View.OnClickListener() {
@@ -223,14 +289,18 @@ public class TampilPengadaan extends AppCompatActivity {
                                 //add detail pengadaan
                                 try {
                                     for (detail_pengadaan items : detail_pengadaanList) {
+
                                         Log.d("detail_pengadaan item", items.getNama_sparepart());
+
                                         Call<detail_pengadaan> pengadaanCall = apiInterface.addDetailPengadaan(response.body().getId_pengadaan(), items.getId_sparepart(), items.getJumlah_pengadaan());
                                         pengadaanCall.enqueue(new Callback<Models.detail_pengadaan>() {
                                             @Override
                                             public void onResponse(Call<Models.detail_pengadaan> call, Response<Models.detail_pengadaan> response) {
                                                 if (response.isSuccessful()) {
+                                                    Log.d("responseisSuccess", String.valueOf(response.body()));
+                                                    Toast.makeText(TampilPengadaan.this, "Data berhasil diupdate!", Toast.LENGTH_SHORT).show();
                                                 } else {
-
+                                                    Log.d("ifFailed", response.message());
                                                 }
                                             }
 
@@ -286,7 +356,10 @@ public class TampilPengadaan extends AppCompatActivity {
 
                 Bundle bundle = new Bundle();
 
-                bundle.putString("jumlah_beli", "1");
+                bundle.putString("jumlah_beli", detail_pengadaan.getJumlah_pengadaan().toString());
+                bundle.putString("spare_pos", String.valueOf(position));
+
+                dialog.setArguments(bundle);
                 dialog.show(getSupportFragmentManager(), "dialog");
             }
 

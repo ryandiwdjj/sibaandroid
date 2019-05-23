@@ -14,12 +14,14 @@ import android.widget.TextView;
 
 import com.example.siba.R;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import Models.penjualan;
 
-public class RecyclerAdapterHistoryDialog extends RecyclerView.Adapter<RecyclerAdapterHistoryDialog.MyViewHolder>
+public class RecyclerAdapterStatusDialog extends RecyclerView.Adapter<RecyclerAdapterStatusDialog.MyViewHolder>
         implements RecyclerView.OnItemTouchListener {
     private Context context;
     private List<penjualan> penjualanList;
@@ -27,16 +29,16 @@ public class RecyclerAdapterHistoryDialog extends RecyclerView.Adapter<RecyclerA
     private ClickListener clicklistener;
     private GestureDetector gestureDetector;
 
-    public RecyclerAdapterHistoryDialog(Context context, List<penjualan> penjualanList) {
+    public RecyclerAdapterStatusDialog(Context context, List<penjualan> penjualanList) {
         this.context = context;
         this.penjualanList = penjualanList;
     }
 
     @NonNull
     @Override
-    public RecyclerAdapterHistoryDialog.MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View v = LayoutInflater.from(context).inflate(R.layout.recycler_view_history, viewGroup, false);
-        final RecyclerAdapterHistoryDialog.MyViewHolder holder = new RecyclerAdapterHistoryDialog.MyViewHolder(v);
+    public RecyclerAdapterStatusDialog.MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+        View v = LayoutInflater.from(context).inflate(R.layout.recycler_view_status, viewGroup, false);
+        final RecyclerAdapterStatusDialog.MyViewHolder holder = new RecyclerAdapterStatusDialog.MyViewHolder(v);
 
         penjualanListFull = new ArrayList<>(penjualanList);
 
@@ -44,10 +46,18 @@ public class RecyclerAdapterHistoryDialog extends RecyclerView.Adapter<RecyclerA
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerAdapterHistoryDialog.MyViewHolder myViewHolder, int i) {
+    public void onBindViewHolder(@NonNull RecyclerAdapterStatusDialog.MyViewHolder myViewHolder, int i) {
         penjualan penjualan = penjualanList.get(i);
         myViewHolder.nama_cabang.setText(penjualan.getNama_cabang());
-        myViewHolder.no_plat.setText(penjualan.getNo_plat_kendaraan());
+        myViewHolder.plat_kendaraan.setText(penjualan.getNo_plat_kendaraan());
+
+        if(penjualan.getStatus_transaksi().equals("belum") && penjualan.getStatus_pembayaran().equals("belum")) {
+            myViewHolder.status.setText("Transaksi belum selesai");
+        }
+        else if(penjualan.getStatus_transaksi().equals("sudah") && penjualan.getStatus_pembayaran().equals("belum")) {
+            myViewHolder.status.setText("Transaksi belum dibayar");
+        }
+
         myViewHolder.total_belanja.setText(penjualan.getGrand_total().toString());
         myViewHolder.created_at.setText(penjualan.getCreated_at());
     }
@@ -69,8 +79,7 @@ public class RecyclerAdapterHistoryDialog extends RecyclerView.Adapter<RecyclerA
 
             if (constraint == null || constraint.length() == 0) {
                 for (penjualan item : penjualanListFull) {
-                    if (item.getStatus_transaksi().equals("sudah")
-                            && item.getStatus_pembayaran().equals("sudah")) {
+                    if (item.getStatus_pembayaran().equals("belum")) {
                         filteredList.add(item);
                     }
 //                    else if(item.getSales_supplier().toLowerCase().contains(filterPattern)) {
@@ -108,7 +117,7 @@ public class RecyclerAdapterHistoryDialog extends RecyclerView.Adapter<RecyclerA
     };
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////Click listener
-    public RecyclerAdapterHistoryDialog(Context context, final RecyclerView recycleView, final ClickListener clicklistener){
+    public RecyclerAdapterStatusDialog(Context context, final RecyclerView recycleView, final ClickListener clicklistener){
 
         this.clicklistener=clicklistener;
         gestureDetector=new GestureDetector(context,new GestureDetector.SimpleOnGestureListener(){
@@ -147,9 +156,10 @@ public class RecyclerAdapterHistoryDialog extends RecyclerView.Adapter<RecyclerA
 
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class MyViewHolder extends RecyclerView.ViewHolder{
         private TextView nama_cabang;
-        private TextView no_plat;
+        private TextView plat_kendaraan;
+        private TextView status;
         private TextView total_belanja;
         private TextView created_at;
 
@@ -157,14 +167,11 @@ public class RecyclerAdapterHistoryDialog extends RecyclerView.Adapter<RecyclerA
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             nama_cabang = itemView.findViewById(R.id.penjualan_recycler_cabang);
-            no_plat = itemView.findViewById(R.id.penjualan_recycler_plat);
+            plat_kendaraan = itemView.findViewById(R.id.penjualan_recycler_plat);
+            status = itemView.findViewById(R.id.penjualan_recycler_status);
             total_belanja = itemView.findViewById(R.id.penjualan_recycler_total_harga);
             created_at = itemView.findViewById(R.id.penjualan_recycler_created);
 
-        }
-        @Override
-        public void onClick(View v) {
-            //Toast.makeText(context, "Hey, you clicked me", Toast.LENGTH_SHORT).show();
         }
     }
 }

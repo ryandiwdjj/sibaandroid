@@ -112,8 +112,11 @@ public interface ApiInterface {
     @GET("mobile/trans_penjualan/")
     Call<List<penjualan>> getPenjualan();
 
-    @GET("mobile/trans_penjualan/getByid/{id}")
-    Call<List<penjualan>> getPenjualanById(@Path("id") Integer id);
+    @GET("mobile/trans_penjualan/getHistoryById/{id}")
+    Call<List<penjualan>> getHistoryById(@Path("id") Integer id);
+
+    @GET("mobile/trans_penjualan/getStatusById/{id}")
+    Call<List<penjualan>> getStatusById(@Path("id") Integer id);
 
     ////////////////////////////////////////////////////////////////////////////////////////////////PENGADAAN
 
@@ -133,4 +136,7 @@ public interface ApiInterface {
             @Field("id_trans_pengadaan") Integer id_trans_pengadaan,
             @Field("id_sparepart") Integer id_sparepart
             , @Field("jumlah_pengadaan") Integer jumlah_pengadaan);
+
+    @GET("mobile/trans_pengadaan/detail/getById/{id}")
+    Call<List<detail_pengadaan>> getDetailPengadaanById(@Path("id") Integer id);
 }

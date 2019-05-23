@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.siba.R;
+import com.example.siba.TampilPengadaan;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -76,8 +77,13 @@ public class SparepartDialogFragment extends DialogFragment {
                 intent = new Intent();
                 intent.putExtra("data_sparepart", spareJSON);
 
-                getTargetFragment().onActivityResult(getTargetRequestCode(), 2, intent);
-                getDialog().dismiss();
+                try {
+                    getTargetFragment().onActivityResult(getTargetRequestCode(), 2, intent);
+                    dismiss();
+                }catch (Exception e) {
+                    ((TampilPengadaan)getActivity()).setSparepart(spare);
+                    dismiss();
+                }
             }
 
             @Override

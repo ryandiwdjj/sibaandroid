@@ -19,12 +19,21 @@
                 android:text="Id Cabang -> nama"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
                 />
+
             <TextView
                 android:id="@+id/penjualan_recycler_plat"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Plat Nomor Kendaraan"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                />
+
+            <TextView
+                android:id="@+id/penjualan_recycler_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Status bayar / pekerjaan"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
                 />
 
             <TextView

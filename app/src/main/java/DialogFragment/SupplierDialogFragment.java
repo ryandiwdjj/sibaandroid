@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.siba.R;
+import com.example.siba.TampilPengadaan;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -73,10 +74,14 @@ public class SupplierDialogFragment extends DialogFragment {
 
                 intent = new Intent();
                 intent.putExtra("data_supplier", suppJSON);
-//
 
-                getTargetFragment().onActivityResult(getTargetRequestCode(), 1, intent);
-                getDialog().dismiss();
+                try {
+                    getTargetFragment().onActivityResult(getTargetRequestCode(), 1, intent);
+                    dismiss();
+                }catch (Exception e) {
+                    ((TampilPengadaan)getActivity()).setSupplier(supp);
+                    dismiss();
+                }
             }
 
             @Override
